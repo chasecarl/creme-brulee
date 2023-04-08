@@ -5,3 +5,4 @@ warnings/
 elpa/
 *.el~
 history
+custom.el

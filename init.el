@@ -19,6 +19,13 @@
     (load bootstrap-file nil 'nomessage)))
 
 
+(defun cb--setup-custom ()
+  "Configures custom."
+  (setq custom-file
+	(concat (file-name-as-directory user-emacs-directory) "custom.el"))
+  (load custom-file))
+
+
 (defun cb-visit-init ()
   "Opens personal init.el"
   (interactive)
@@ -119,6 +126,11 @@
   (global-set-key (kbd "C-c b i") 'cb-visit-init))
 
 
+(defun cb-misc ()
+  "Miscellaneous stuff."
+   (cb--setup-custom))
+
+
 (defun cb-load-packages ()
   "Loads all specified packages."
   (cb-completion)
@@ -127,4 +139,5 @@
 
 (cb-package-management)
 (cb-global-bindings)
+(cb-misc)
 (cb-load-packages)
