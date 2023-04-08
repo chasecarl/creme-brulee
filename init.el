@@ -37,6 +37,41 @@
   (straight-use-package 'use-package))
 
 
+(defun cb--adjust-visuals ()
+  "Hides some unneeded things from GUI."
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (set-fringe-mode 10))
+
+
+(defun cb--minimize-frame ()
+  "Minimizes the initial and startup frames."
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+
+
+(defun cb--setup-line-numbers ()
+  "Configures line numbers in windows."
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+  (setq display-line-numbers-type 'relative)
+
+  ;; TODO: it should actually be after all the packages are loaded
+  (dolist (mode '(term-mode-hook
+		  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0)))))
+
+
+(defun cb-startup ()
+  "Stuff that runs on startup."
+  (setq inhibit-startup-message t)
+  (cb--adjust-visuals)
+  (cb--minimize-frame)
+  (cb--setup-line-numbers))
+
+
 (defun cb-package-management ()
   "Configures package manager and package loading."
   (cb--setup-use-package))
@@ -146,6 +181,7 @@
   (cb-org))
 
 
+(cb-startup)
 (cb-package-management)
 (cb-global-bindings)
 (cb-misc)
