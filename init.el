@@ -19,6 +19,12 @@
     (load bootstrap-file nil 'nomessage)))
 
 
+(defun cb-visit-init ()
+  "Opens personal init.el"
+  (interactive)
+  (find-file (concat (file-name-as-directory user-emacs-directory) "init.el")))
+
+
 (defun cb--setup-use-package ()
   "Configures use-package."
   (straight-use-package 'use-package))
@@ -108,6 +114,11 @@
     (global-set-key (kbd "C-c j") (cdr (car (cdr (cdr (car (cdr org-journal-mode-map)))))))))
 
 
+(defun cb-global-bindings ()
+  "Binds commands that aren't part of a package."
+  (global-set-key (kbd "C-c b i") 'cb-visit-init))
+
+
 (defun cb-load-packages ()
   "Loads all specified packages."
   (cb-completion)
@@ -115,4 +126,5 @@
 
 
 (cb-package-management)
+(cb-global-bindings)
 (cb-load-packages)
