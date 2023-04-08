@@ -85,6 +85,11 @@
 (defun cb-org ()
   "Loads and configures org-mode."
   (use-package org
+    :config
+    (setq org-log-done 'time
+	  org-todo-keywords
+	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
+    :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
     :bind (("C-c a" . org-agenda))))  ; global
 	   ; :map org-mode-map (kbd . func))))  ; mode-specific
