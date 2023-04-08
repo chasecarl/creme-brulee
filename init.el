@@ -64,6 +64,12 @@
     (add-hook mode (lambda () (display-line-numbers-mode 0)))))
 
 
+(defun cb--open-agenda-only ()
+  "Opens the agenda view for the current day."
+  (org-agenda-list 1)
+  (delete-other-windows))
+
+
 (defun cb-startup ()
   "Stuff that runs on startup."
   (setq inhibit-startup-message t)
@@ -186,3 +192,4 @@
 (cb-global-bindings)
 (cb-misc)
 (cb-load-packages)
+(cb--open-agenda-only)
