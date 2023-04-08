@@ -2,5 +2,6 @@ auto-save-list/
 eln-cache/
 straight/
 warnings/
+elpa/
 *.el~
 history
