@@ -82,9 +82,18 @@
   (cb--setup-company))
 
 
+(defun cb-org ()
+  "Loads and configures org-mode."
+  (use-package org
+    :straight (:type built-in)
+    :bind (("C-c a" . org-agenda))))  ; global
+	   ; :map org-mode-map (kbd . func))))  ; mode-specific
+
+
 (defun cb-load-packages ()
   "Loads all specified packages."
-  (cb-completion))
+  (cb-completion)
+  (cb-org))
 
 
 (cb-package-management)
