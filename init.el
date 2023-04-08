@@ -108,17 +108,26 @@
     :bind (("C-c a" . org-agenda)))  ; global
 	   ; :map org-mode-map (kbd . func)))  ; mode-specific
 
-  (use-package org-journal
-    :init
-    (setq org-journal-prefix-key "C-c j")
-    :config
-    (setq org-journal-dir
-	  (concat (file-name-as-directory org-directory) "journal")
-	  org-journal-date-prefix "#+TITLE: "
-	  org-journal-time-prefix "* "
-	  org-journal-file-format "%Y-%m-%d.org"
-	  org-journal-enable-agenda-integration t)
-    (global-set-key (kbd "C-c j") (cdr (car (cdr (cdr (car (cdr org-journal-mode-map)))))))))
+  (let ((my-org-journal-prefix-key "C-c j"))
+    (use-package org-journal
+      :init
+      (setq org-journal-prefix-key my-org-journal-prefix-key)
+      :bind
+      :config
+      (setq org-journal-dir
+	    (concat (file-name-as-directory org-directory) "journal")
+	    org-journal-date-prefix "#+TITLE: "
+	    org-journal-time-prefix "* "
+	    org-journal-file-format "%Y-%m-%d.org"
+	    org-journal-enable-agenda-integration t)
+      (define-key org-journal-mode-map
+		  (kbd (concat my-org-journal-prefix-key " j"))
+		  'org-journal-open-current-journal-file)
+      (define-key org-journal-mode-map
+		  (kbd (concat my-org-journal-prefix-key " n"))
+		  'org-journal-new-entry)
+      (global-set-key (kbd my-org-journal-prefix-key)
+		      (cdr (car (cdr (cdr (car (cdr org-journal-mode-map))))))))))
 
 
 (defun cb-global-bindings ()
