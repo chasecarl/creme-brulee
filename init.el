@@ -71,9 +71,16 @@
 	  completion-category-overrides '((file (styles partial-completion))))))
 
 
+(defun cb--setup-company ()
+  "Setups company-mode."
+  (use-package company
+    :hook (after-init . global-company-mode)))
+
+
 (defun cb-completion ()
   "Loads and configures completion backend."
-  (cb--setup-vertico))
+  (cb--setup-vertico)
+  (cb--setup-company))
 
 
 (defun cb-load-packages ()
