@@ -83,16 +83,29 @@
 
 
 (defun cb-org ()
-  "Loads and configures org-mode."
+  "Loads and configures org-mode and related packages."
   (use-package org
     :config
     (setq org-log-done 'time
 	  org-todo-keywords
-	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
+	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
+	  org-element-use-cache nil)  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
-    :bind (("C-c a" . org-agenda))))  ; global
-	   ; :map org-mode-map (kbd . func))))  ; mode-specific
+    :bind (("C-c a" . org-agenda)))  ; global
+	   ; :map org-mode-map (kbd . func)))  ; mode-specific
+
+  (use-package org-journal
+    :init
+    (setq org-journal-prefix-key "C-c j")
+    :config
+    (setq org-journal-dir
+	  (concat (file-name-as-directory org-directory) "journal")
+	  org-journal-date-prefix "#+TITLE: "
+	  org-journal-time-prefix "* "
+	  org-journal-file-format "%Y-%m-%d.org"
+	  org-journal-enable-agenda-integration t)
+    (global-set-key (kbd "C-c j") (cdr (car (cdr (cdr (car (cdr org-journal-mode-map)))))))))
 
 
 (defun cb-load-packages ()
