@@ -147,7 +147,6 @@
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
     :bind (("C-c a" . org-agenda)))  ; global
-	   ; :map org-mode-map (kbd . func)))  ; mode-specific
 
   (let ((my-org-journal-prefix-key "C-c j"))
     (use-package org-journal
@@ -181,10 +180,21 @@
    (cb--setup-custom))
 
 
+(defun cb--setup-magit ()
+  (use-package magit
+    :bind (:map prog-mode-map ("C-c g" . magit-status))))
+
+
+(defun cb-dev ()
+  "Development stuff."
+  (cb--setup-magit))
+
+
 (defun cb-load-packages ()
   "Loads all specified packages."
   (cb-completion)
-  (cb-org))
+  (cb-org)
+  (cb-dev))
 
 
 (cb-startup)
