@@ -194,9 +194,32 @@
     :bind (:map prog-mode-map ("C-c g" . magit-status))))
 
 
+(defun cb--setup-eglot ()
+  ;; TODO: configure the language server here if there are many
+  ;;       see eglot-server-programs variable
+  (use-package eglot
+    :straight (:type built-in)
+    :hook ((python-mode . eglot-ensure)
+	   (python-ts-mode . eglot-ensure)
+	   (prog-mode . hs-minor-mode))
+    :bind (:map eglot-mode-map ("C-c r" . eglot-rename)))
+
+  (defun cb-get-current-server ()
+    "Returns the run command for the current language server."
+    (interactive)
+    (message "%s" (process-command
+		   (jsonrpc--process (eglot-current-server))))))
+
+
+(defun cb-setup-lsp ()
+  "Setups the chosen LSP client."
+  (cb--setup-eglot))
+
+
 (defun cb-dev ()
   "Development stuff."
-  (cb--setup-magit))
+  (cb--setup-magit)
+  (cb-setup-lsp))
 
 
 (defun cb-load-packages ()
