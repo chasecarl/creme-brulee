@@ -143,6 +143,7 @@
     (setq org-log-done 'time
 	  org-todo-keywords
 	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
+	  org-edit-src-content-indentation 0
 	  org-element-use-cache nil)  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
