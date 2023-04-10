@@ -152,7 +152,6 @@
     (use-package org-journal
       :init
       (setq org-journal-prefix-key my-org-journal-prefix-key)
-      :bind
       :config
       (setq org-journal-dir
 	    (concat (file-name-as-directory org-directory) "journal")
@@ -167,7 +166,17 @@
 		  (kbd (concat my-org-journal-prefix-key " n"))
 		  'org-journal-new-entry)
       (global-set-key (kbd my-org-journal-prefix-key)
-		      (cdr (car (cdr (cdr (car (cdr org-journal-mode-map))))))))))
+		      (cdr (car (cdr (cdr (car (cdr org-journal-mode-map)))))))))
+
+  (use-package org-download
+    :config
+    (setq org-download-method 'directory
+	  org-download-image-org-width 400
+	  org-image-actual-width nil)
+    (setq-default org-download-image-dir
+		  (concat (file-name-as-directory org-directory) "download"))
+    :bind (:map org-mode-map (("C-c i y" . org-download-yank)
+			      ("C-c i r" . org-display-inline-images)))))
 
 
 (defun cb-global-bindings ()
