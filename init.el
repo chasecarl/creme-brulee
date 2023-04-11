@@ -23,7 +23,7 @@
   "Configures custom."
   (setq custom-file
 	(concat (file-name-as-directory user-emacs-directory) "custom.el"))
-  (load custom-file))
+  (load custom-file t))
 
 
 (defun cb-visit-init ()
