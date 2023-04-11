@@ -75,6 +75,7 @@
   (setq inhibit-startup-message t)
   (cb--adjust-visuals)
   (cb--minimize-frame)
+  (pixel-scroll-precision-mode)
   (cb--setup-line-numbers))
 
 
