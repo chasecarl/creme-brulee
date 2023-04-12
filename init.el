@@ -60,7 +60,8 @@
 
   ;; TODO: it should actually be after all the packages are loaded
   (dolist (mode '(term-mode-hook
-		  eshell-mode-hook))
+		  eshell-mode-hook
+		  nov-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0)))))
 
 
@@ -306,11 +307,18 @@
   (cb-setup-lsp))
 
 
+(defun cb-reading ()
+  "Reading stuff."
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode)))
+
+
 (defun cb-load-packages ()
   "Loads all specified packages."
   (cb-completion)
   (cb-org)
-  (cb-dev))
+  (cb-dev)
+  (cb-reading))
 
 
 (cb-startup)
