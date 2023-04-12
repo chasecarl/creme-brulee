@@ -67,7 +67,7 @@
 
 (defun cb--open-agenda-only ()
   "Opens the agenda view for the current day."
-  (org-agenda-list 1)
+  (org-agenda-list)
   (delete-other-windows))
 
 
@@ -146,6 +146,8 @@
     (setq org-log-done 'time
 	  org-todo-keywords
 	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
+	  org-agenda-span 'fortnight
+	  org-agenda-start-on-weekday 0
 	  org-edit-src-content-indentation 0
 	  org-element-use-cache nil)  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
     :hook (org-mode . auto-fill-mode)
