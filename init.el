@@ -76,6 +76,7 @@
   (cb--adjust-visuals)
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
+  (save-place-mode)
   (cb--setup-line-numbers))
 
 

@@ -7,3 +7,4 @@ tree-sitter/
 *.el~
 history
 custom.el
+places
