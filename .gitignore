@@ -3,6 +3,7 @@ eln-cache/
 straight/
 warnings/
 elpa/
+tree-sitter/
 *.el~
 history
 custom.el

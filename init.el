@@ -197,7 +197,7 @@
 
 
 (defun cb--setup-eglot ()
-  ;; TODO: configure the language server here if there are many
+  ;; TODO: configure the language server here. If there are many,
   ;;       see eglot-server-programs variable
   (use-package eglot
     :straight (:type built-in)
@@ -218,9 +218,90 @@
   (cb--setup-eglot))
 
 
+(defun cb--setup-tree-sitter ()
+  (use-package treesit
+    :straight (:type built-in)
+    ;; Based on https://github.com/mickeynp/combobulate
+    :preface
+    (require 'cl-lib)
+    (cl-defun cb--make-treesit-lang-list (lang
+				          &key
+					  (org "tree-sitter")
+					  (repo (concat "tree-sitter-" (symbol-name lang)))
+					  sourcedir
+					  branch)
+      (let ((result (list lang (concat "https://github.com/" org "/" repo))))
+	(if (or sourcedir branch)
+	    `(,@result
+	      ;; We do need to include 'master' if we specify a sourcedir!
+	      ,(when sourcedir (if branch branch "master"))
+	      ,(if sourcedir sourcedir "src"))
+	  result)))
+
+    (defun cb-setup-install-grammars ()
+      "Install Tree-sitter grammars if they are absent."
+      (interactive)
+      ;; the grammar list is almost entirely taken from
+      ;; https://github.com/casouri/tree-sitter-module
+      (dolist (grammar
+	       '((clojure :org "dannyfreeman")
+		 (cmake :org "uyha")
+		 (css)
+		 (dart :org "ast-grep")
+		 (dockerfile :org "camdencheek")
+		 (elisp :org "Wilfred")
+		 (elixir :org "elixir-lang")
+		 (glsl :org "theHamsta")
+		 (go :org "camdencheek")
+		 (heex :org "phoenixframework")
+		 ;; (janet :org "sogaiu" :repo "tree-sitter-janet-simple")
+		 (janet :org "GrayJack")
+		 (javascript :sourcedir "src")
+		 (make :org "alemuller")
+		 (markdown :org "ikatyang")
+		 (org :org "milisims")
+		 (perl :org "ganezdragon")
+		 (proto :org "mitchellh")
+		 (python)
+		 (scss :org "serenadeai")
+		 (sql :org "DerekStride" :branch "gh-pages")
+		 (surface :org "connorlay")
+		 (toml :org "ikatyang")
+		 (tsx :repo "tree-sitter-typescript" :sourcedir "tsx/src")
+		 (typescript :sourcedir "typescript/src")
+		 (vhdl :org "alemuller")
+		 (wgsl :org "mehmetoguzderin")
+		 (yaml :org "ikatyang")))
+	(add-to-list 'treesit-language-source-alist
+		     (apply 'cb--make-treesit-lang-list grammar))
+	;; Only install `grammar' if we don't already have it
+	;; installed. However, if you want to *update* a grammar then
+	;; this obviously prevents that from happening.
+	(unless (treesit-language-available-p (car grammar))
+	  (treesit-install-language-grammar (car grammar)))))
+    ;; You can remap major modes with `major-mode-remap-alist'. Note
+    ;; that this does *not* extend to hooks! Make sure you migrate them
+    ;; also
+    (dolist (mapping '((c-mode . c-ts-mode)
+		       (c++-mode . c++-ts-mode)
+		       (conf-toml-mode . toml-ts-mode)
+		       (css-mode . css-ts-mode)
+		       (js-mode . js-ts-mode)
+		       (python-mode . python-ts-mode)
+		       (typescript-mode . tsx-ts-mode)))
+      (add-to-list 'major-mode-remap-alist mapping))
+
+    :config
+    (cb-setup-install-grammars)
+
+    :mode
+    ("\\.ya?ml\\'" . yaml-ts-mode)))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
+  (cb--setup-tree-sitter)
   (cb-setup-lsp))
 
 
