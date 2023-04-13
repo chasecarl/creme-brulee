@@ -247,7 +247,7 @@
 	(if (or sourcedir branch)
 	    `(,@result
 	      ;; We do need to include 'master' if we specify a sourcedir!
-	      ,(when sourcedir (if branch branch "master"))
+	      ,(if branch branch (when sourcedir "master"))
 	      ,(if sourcedir sourcedir "src"))
 	  result)))
 
