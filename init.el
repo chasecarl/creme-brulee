@@ -16,7 +16,12 @@
 	   'silent 'inhibit-cookies)
 	(goto-char (point-max))
 	(eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage)))
+    (load bootstrap-file nil 'nomessage))
+
+  (defvar cb-after-packages-load ()
+    "A list of all functions that run after all packages are loaded.")
+  (defvar cb-no-line-number-modes ()
+    "A list of modes without line numbers."))
 
 
 (defun cb--setup-custom ()
@@ -58,11 +63,15 @@
   (global-display-line-numbers-mode t)
   (setq display-line-numbers-type 'relative)
 
-  ;; TODO: it should actually be after all the packages are loaded
-  (dolist (mode '(term-mode-hook
-		  eshell-mode-hook
-		  nov-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0)))))
+  (defun cb--hook-from-mode (mode)
+    ;; For some reason, `intern-soft' returns nil when the symbol is actually there...
+    (intern (concat (symbol-name mode) "-hook")))
+  (defun cb--remove-line-numbers ()
+    (dolist (mode cb-no-line-number-modes)
+      (add-hook (cb--hook-from-mode mode)
+		(lambda () (display-line-numbers-mode 0)))))
+
+  (add-to-list 'cb-after-packages-load 'cb--remove-line-numbers))
 
 
 (defun cb--open-agenda-only ()
@@ -296,22 +305,35 @@
       (add-to-list 'major-mode-remap-alist mapping))
 
     :config
-    (cb-setup-install-grammars)
+    (cb-setup-install-grammars))
 
-    :mode
-    ("\\.ya?ml\\'" . yaml-ts-mode)))
+  ;; Not using `:mode' above because yaml config is not quite `treesit' config,
+  ;; and using it defers `cb-setup-install-grammars'
+  ;; TODO: consider using `use-package' `:demand' or `:init'
+  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode)))
+
+
+(defun cb-setup-shell-and-terminal ()
+  "Setups shell(s) and terminal emulator(s)."
+  (add-to-list 'cb-no-line-number-modes 'eshell-mode)
+  (add-to-list 'cb-no-line-number-modes 'term-mode))
 
 
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
   (cb--setup-tree-sitter)
+  (cb-setup-shell-and-terminal)
   (cb-setup-lsp))
 
 
 (defun cb-reading ()
   "Reading stuff."
   (use-package nov
+    ;; `:mode' actually defers package configuration, and then `:config'
+    ;; will run only after you open an epub file, so we have to use `:init'
+    :init
+    (add-to-list 'cb-no-line-number-modes 'nov-mode)
     :mode ("\\.epub\\'" . nov-mode)))
 
 
@@ -323,9 +345,16 @@
   (cb-reading))
 
 
+(defun cb-load-packages-with-hooks ()
+  "The same as `cb-load-packages', but runs all defined package hooks."
+  (cb-load-packages)
+  (dolist (func cb-after-packages-load)
+    (funcall func)))
+
+
 (cb-startup)
 (cb-package-management)
 (cb-global-bindings)
 (cb-misc)
-(cb-load-packages)
+(cb-load-packages-with-hooks)
 (cb--open-agenda-only)
