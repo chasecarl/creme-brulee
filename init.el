@@ -42,13 +42,32 @@
   (straight-use-package 'use-package))
 
 
+(defun cb-setup-theme ()
+  "Setups the color theme."
+  (use-package emacs
+    :config
+    (require-theme 'modus-themes)
+    (setq modus-themes-inhibit-reload nil
+	  modus-themes-links '(neutral-underline)
+	  modus-themes-mode-line '(accented borderless)
+	  modus-themes-completions '((selection . (accented intense semibold))
+				     (popup . (accented semibold)))
+	  modus-themes-markup '(background intense italic)
+	  modus-themes-paren-match '(intense)
+	  modus-themes-region '(accented bg-only)
+	  modus-themes-org-blocks 'tinted-background
+	  modus-themes-org-agenda '((header-date . (bold-today))))
+    (load-theme 'modus-operandi)))
+
+
 (defun cb--adjust-visuals ()
   "Hides some unneeded things from GUI."
   (scroll-bar-mode -1)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (tooltip-mode -1)
-  (set-fringe-mode 10))
+  (set-fringe-mode 10)
+  (cb-setup-theme))
 
 
 (defun cb--minimize-frame ()
