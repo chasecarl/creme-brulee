@@ -134,9 +134,26 @@
   ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows)))
 
 
+(defun cb-layout-management ()
+  "Manage layouts."
+  (use-package perspective
+    :init
+    (setq persp-state-default-file
+	  (concat (file-name-as-directory user-emacs-directory) "persp-state.el"))
+    (persp-mode)
+    (persp-state-load persp-state-default-file)
+    :bind
+    (("C-x b" . persp-switch-to-buffer*)
+     ("C-x k" . persp-kill-buffer))
+    :config
+    ;; `:hook' with `kill-emacs' fails on missing mode called `perspective'
+    (add-hook 'kill-emacs-hook #'persp-state-save)))
+
+
 (defun cb-workspace-management ()
   "Manage windows, buffers, layouts, etc."
-  (cb-window-management))
+  (cb-window-management)
+  (cb-layout-management))
 
 
 (defun cb-startup ()
@@ -429,4 +446,3 @@
 (cb-global-bindings)
 (cb-misc)
 (cb-load-packages-with-hooks)
-(cb--open-agenda-only)
