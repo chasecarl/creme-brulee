@@ -4,6 +4,7 @@ straight/
 warnings/
 elpa/
 tree-sitter/
+transient/
 *.el~
 history
 custom.el

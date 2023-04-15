@@ -99,6 +99,46 @@
   (delete-other-windows))
 
 
+(defun cb-window-management ()
+  "Manage windows."
+  (transient-define-prefix cb-manage-windows ()
+    "Manage window transient."
+    :transient-suffix 'transient--do-stay
+    :transient-non-suffix 'transient--do-quit-one
+    ["Switch window\n"
+     [("h" "Go to the window on the left" windmove-left)
+      ("j" "Go to the window below" windmove-down)
+      ("k" "Go to the window above" windmove-up)
+      ("l" "Go to the window on the right" windmove-right)]])
+  ;; TODO: merge into one function (the if-version throws error when used
+  ;;       on `cb-manage-windows')
+  (defun cb--ensure-transient-hidden-popup (orig-fun &rest args)
+    (if (eq (oref transient--prefix command) 'cb-manage-windows)
+	(let ((old-show-popup transient-show-popup))
+	  (customize-set-variable 'transient-show-popup nil)
+	  (funcall orig-fun)  ; assuming it takes no args
+	  (customize-set-variable 'transient-show-popup old-show-popup))
+      (funcall orig-fun)))
+  (defun cb--ensure-transient-hidden-popup-2 (orig-fun &rest args)
+    (let ((old-show-popup transient-show-popup))
+      (customize-set-variable 'transient-show-popup nil)
+      (let ((res (apply orig-fun args)))
+	(customize-set-variable 'transient-show-popup old-show-popup)
+	res)))
+  (advice-add 'transient--redisplay :around #'cb--ensure-transient-hidden-popup)
+  (advice-add 'cb-manage-windows :around #'cb--ensure-transient-hidden-popup-2)
+
+  (defun cb-remove-advice-from-functions (funcs)
+    (dolist (func funcs)
+      (advice-mapc (lambda (advice _props) (advice-remove func advice)) func))))
+  ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows)))
+
+
+(defun cb-workspace-management ()
+  "Manage windows, buffers, layouts, etc."
+  (cb-window-management))
+
+
 (defun cb-startup ()
   "Stuff that runs on startup."
   (setq inhibit-startup-message t)
@@ -106,6 +146,7 @@
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
   (save-place-mode)
+  (cb-workspace-management)
   (cb--setup-line-numbers))
 
 
@@ -215,7 +256,19 @@
 
 (defun cb-global-bindings ()
   "Binds commands that aren't part of a package."
-  (global-set-key (kbd "C-c b i") 'cb-visit-init))
+  ;; TODO: implement Creme Brulee transient
+  (global-set-key (kbd "C-c b i") 'cb-visit-init)
+  ;; this is what you lose with the below
+  ;; TODO: extend `cb-manage-windows' to include it (partially?)
+  ;; C-x w -		fit-window-to-buffer
+  ;; C-x w 0		delete-windows-on
+  ;; C-x w 2		split-root-window-below
+  ;; C-x w 3		split-root-window-right
+  ;; C-x w s		window-toggle-side-windows
+
+  ;; C-x w ^ f	tear-off-window
+  ;; C-x w ^ t	tab-window-detach
+  (global-set-key (kbd "C-x w") 'cb-manage-windows))
 
 
 (defun cb-misc ()
