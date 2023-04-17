@@ -141,7 +141,8 @@
     (setq persp-state-default-file
 	  (concat (file-name-as-directory user-emacs-directory) "persp-state.el"))
     (persp-mode)
-    (persp-state-load persp-state-default-file)
+    (when (file-exists-p persp-state-default-file)
+      (persp-state-load persp-state-default-file))
     :bind
     (("C-x b" . persp-switch-to-buffer*)
      ("C-x k" . persp-kill-buffer))
