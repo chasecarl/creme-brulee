@@ -143,9 +143,10 @@
     (persp-mode)
     (when (file-exists-p persp-state-default-file)
       (persp-state-load persp-state-default-file))
+    (persp-switch "main")
     :bind
     (("C-x b" . persp-switch-to-buffer*)
-     ("C-x k" . persp-kill-buffer))
+     ("C-x k" . persp-kill-buffer*))
     :config
     ;; `:hook' with `kill-emacs' fails on missing mode called `perspective'
     (add-hook 'kill-emacs-hook #'persp-state-save)))
