@@ -398,6 +398,17 @@
     :config
     (cb-setup-install-grammars))
 
+  (use-package combobulate
+    :straight (combobulate :type git
+			   :host github
+			   :repo "mickeynp/combobulate")
+    :hook ((python-ts-mode . combobulate-mode)
+	   (js-ts-mode . combobulate-mode)
+	   (css-ts-mode . combobulate-mode)
+	   (yaml-ts-mode . combobulate-mode)
+	   (typescript-ts-mode . combobulate-mode)
+	   (tsx-ts-mode . combobulate-mode)))
+
   ;; Not using `:mode' above because yaml config is not quite `treesit' config,
   ;; and using it defers `cb-setup-install-grammars'
   ;; TODO: consider using `use-package' `:demand' or `:init'

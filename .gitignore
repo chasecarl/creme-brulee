@@ -5,6 +5,7 @@ warnings/
 elpa/
 tree-sitter/
 transient/
+combobulate/
 *.el~
 history
 custom.el
