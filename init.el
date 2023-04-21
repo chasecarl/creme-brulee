@@ -244,6 +244,7 @@
 
   (let ((my-org-journal-prefix-key "C-c j"))
     (use-package org-journal
+      :after (org)
       :init
       (setq org-journal-prefix-key my-org-journal-prefix-key)
       :config
