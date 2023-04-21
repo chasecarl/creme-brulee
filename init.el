@@ -165,8 +165,8 @@
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
   (save-place-mode)
-  (cb-workspace-management)
-  (cb--setup-line-numbers))
+  (cb--setup-line-numbers)
+  (cb-workspace-management))
 
 
 (defun cb-package-management ()
