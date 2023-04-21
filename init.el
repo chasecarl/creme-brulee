@@ -26,15 +26,14 @@
 
 (defun cb--setup-custom ()
   "Configures custom."
-  (setq custom-file
-	(concat (file-name-as-directory user-emacs-directory) "custom.el"))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file t))
 
 
 (defun cb-visit-init ()
   "Opens personal init.el"
   (interactive)
-  (find-file (concat (file-name-as-directory user-emacs-directory) "init.el")))
+  (find-file (expand-file-name "init.el" user-emacs-directory)))
 
 
 (defun cb--setup-use-package ()
@@ -139,7 +138,7 @@
   (use-package perspective
     :init
     (setq persp-state-default-file
-	  (concat (file-name-as-directory user-emacs-directory) "persp-state.el"))
+	  (expand-file-name "persp-state.el" user-emacs-directory))
     (persp-mode)
     (when (file-exists-p persp-state-default-file)
       (persp-state-load persp-state-default-file))
@@ -257,7 +256,7 @@
       (setq org-journal-prefix-key my-org-journal-prefix-key)
       :config
       (setq org-journal-dir
-	    (concat (file-name-as-directory org-directory) "journal")
+	    (expand-file-name "journal" org-directory)
 	    org-journal-date-prefix "#+TITLE: "
 	    org-journal-time-prefix "* "
 	    org-journal-file-format "%Y-%m-%d.org"
@@ -277,7 +276,7 @@
 	  org-download-image-org-width 400
 	  org-image-actual-width nil)
     (setq-default org-download-image-dir
-		  (concat (file-name-as-directory org-directory) "download"))
+		  (expand-file-name "download" org-directory))
     :bind (:map org-mode-map (("C-c i y" . org-download-yank)
 			      ("C-c i r" . org-display-inline-images)))))
 
