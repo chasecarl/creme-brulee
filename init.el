@@ -158,6 +158,13 @@
   (cb-layout-management))
 
 
+(defun cb-setup-font ()
+  "Setups fonts."
+  (let ((font "CodeNewRoman Nerd Font Mono"))
+    (set-face-attribute 'default nil :font font :height 130)
+    (set-frame-font font nil t)))
+
+
 (defun cb-startup ()
   "Stuff that runs on startup."
   (setq inhibit-startup-message t)
@@ -165,6 +172,7 @@
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
   (save-place-mode)
+  (cb-setup-font)
   (cb--setup-line-numbers)
   (cb-workspace-management))
 
