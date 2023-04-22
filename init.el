@@ -159,9 +159,12 @@
 
 (defun cb-setup-font ()
   "Setups fonts."
-  (let ((font "CodeNewRoman Nerd Font Mono"))
-    (set-face-attribute 'default nil :font font :height 130)
-    (set-frame-font font nil t)))
+  ;; TODO: consider configuring modus-themes-* fonts
+  (let ((mono-font "CodeNewRoman Nerd Font Mono"))
+    (set-face-attribute 'default nil :font mono-font :height 130)
+    (set-frame-font mono-font nil t))
+  (let ((variable-font "Lato"))
+    (set-face-attribute 'variable-pitch nil :font variable-font :height 140)))
 
 
 (defun cb-startup ()
