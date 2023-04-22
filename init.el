@@ -163,7 +163,8 @@
   (let ((mono-font "CodeNewRoman Nerd Font Mono"))
     (set-face-attribute 'default nil :font mono-font :height 130)
     (set-frame-font mono-font nil t))
-  (let ((variable-font "Lato"))
+  ;; (let ((variable-font "Lato"))
+  (let ((variable-font "Cardo"))
     (set-face-attribute 'variable-pitch nil :font variable-font :height 140)))
 
 
