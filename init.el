@@ -165,15 +165,18 @@
 
 
 (defun cb-startup ()
-  "Stuff that runs on startup."
+  "Stuff that runs on startup.
+
+Shouldn't have any package configuration in, only setting variables, activating
+modes, etc.
+"
   (setq inhibit-startup-message t)
   (cb--adjust-visuals)
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
   (save-place-mode)
   (cb-setup-font)
-  (cb--setup-line-numbers)
-  (cb-workspace-management))
+  (cb--setup-line-numbers))
 
 
 (defun cb-package-management ()
@@ -237,6 +240,7 @@
 (defun cb-org ()
   "Loads and configures org-mode and related packages."
   (use-package org
+    :demand t
     :config
     (setq org-log-done 'time
 	  org-todo-keywords
@@ -450,7 +454,6 @@
 (defun cb-load-packages ()
   "Loads all specified packages."
   (cb-completion)
-  (cb-org)
   (cb-dev)
   (cb-reading))
 
@@ -464,6 +467,16 @@
 
 (cb-startup)
 (cb-package-management)
+;; org setup should be before all other packages
+;; Important: I'm now on Emacs commit b4afee03193575c3812c6f9704cd08d0dc852e5a
+;; when I use more recent version, say, 3899acbb3367984d66c7484a208b40a6851f4cc2
+;; I get 'org version mismatch' despite clearing the straight cache, and
+;; disabling compilation
+(cb-org)
 (cb-global-bindings)
 (cb-misc)
 (cb-load-packages-with-hooks)
+;; Should be actually after all the packages are loaded, because some packages
+;; are deferred based on file extension, but we're visiting these files at the
+;; perspective load time
+(cb-workspace-management)
