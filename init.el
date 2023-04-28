@@ -437,12 +437,19 @@ modes, etc.
   (add-to-list 'cb-no-line-number-modes 'term-mode))
 
 
+(defun cb-setup-python ()
+  "Setups all not-LSP Python-related stuff."
+  (setq python-shell-interpreter "ipython"
+	python-shell-interpreter-args "--simple-prompt -i"))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
   (cb--setup-tree-sitter)
   (cb-setup-shell-and-terminal)
-  (cb-setup-lsp))
+  (cb-setup-lsp)
+  (cb-setup-python))
 
 
 (defun cb-reading ()
