@@ -166,7 +166,8 @@
     (set-frame-font mono-font nil t))
   ;; (let ((variable-font "Lato"))
   (let ((variable-font "Cardo"))
-    (set-face-attribute 'variable-pitch nil :font variable-font :height 140)))
+    (set-face-attribute 'variable-pitch nil :font variable-font :height 140))
+  (prefer-coding-system 'utf-8))
 
 
 (defun cb-startup ()
