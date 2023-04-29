@@ -435,7 +435,10 @@ modes, etc.
 (defun cb-setup-shell-and-terminal ()
   "Setups shell(s) and terminal emulator(s)."
   (add-to-list 'cb-no-line-number-modes 'eshell-mode)
-  (add-to-list 'cb-no-line-number-modes 'term-mode))
+  (add-to-list 'cb-no-line-number-modes 'term-mode)
+  (add-hook 'term-exec-hook (lambda ()
+			      (set-buffer-process-coding-system 'utf-8-unix
+								'utf-8-unix))))
 
 
 (defun cb-setup-python ()
