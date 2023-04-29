@@ -313,8 +313,7 @@ modes, etc.
 
 
 (defun cb--setup-magit ()
-  (use-package magit
-    :bind (:map prog-mode-map ("C-c g" . magit-status))))
+  (use-package magit))
 
 
 (defun cb--setup-eglot ()
