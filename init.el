@@ -162,7 +162,7 @@
   "Setups fonts."
   ;; TODO: consider configuring modus-themes-* fonts
   (let ((mono-font "CodeNewRoman Nerd Font Mono"))
-    (set-face-attribute 'default nil :font mono-font :height 130)
+    (set-face-attribute 'default nil :font mono-font :height 110)
     (set-frame-font mono-font nil t))
   ;; (let ((variable-font "Lato"))
   (let ((variable-font "Cardo"))
