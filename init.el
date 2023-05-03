@@ -220,6 +220,9 @@ modes, etc.
   ;; Persist history over Emacs restarts. Vertico sorts by history position.
   (use-package savehist
     :init
+    (setq savehist-save-minibuffer-history 1
+	  savehist-additional-variables
+	  '(kill-ring search-ring regexp-search-ring compile-history log-edit-comment-ring))
     (savehist-mode))
 
   ;; Use the `orderless' completion style.
