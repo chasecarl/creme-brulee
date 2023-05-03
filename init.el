@@ -182,6 +182,8 @@ modes, etc.
   (pixel-scroll-precision-mode)
   (save-place-mode)
   (cb-setup-font)
+  (use-package emacs
+    :hook ((prog-mode . (lambda () (setq truncate-lines t)))))
   (cb--setup-line-numbers))
 
 
