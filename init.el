@@ -459,6 +459,18 @@ modes, etc.
     :config
     (pyvenv-mode t))
   ;; TODO: advice `pyvenv-activate' to use poetry env, and do it before eglot
+  (use-package python-mls
+    :demand t
+    :config
+    (setq python-mls-save-command-history t
+	  python-mls-multiline-history-modifier nil
+	  ;; TODO: this should remove C-n/p remap but it doesn't :(
+	  python-mls-mode-map
+	  `(keymap ,(seq-filter
+		     (lambda (el) (not (equal (car el) 'remap)))
+		     (cdr python-mls-mode-map))))
+    :hook
+    (inferior-python-mode . python-mls-mode)))
 
 
 (defun cb-dev ()
