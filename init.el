@@ -455,6 +455,10 @@ modes, etc.
   (use-package emacs
     :hook
     (inferior-python-mode . (lambda () (setq tab-width 4))))
+  (use-package pyvenv
+    :config
+    (pyvenv-mode t))
+  ;; TODO: advice `pyvenv-activate' to use poetry env, and do it before eglot
 
 
 (defun cb-dev ()
