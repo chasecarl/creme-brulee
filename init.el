@@ -448,11 +448,12 @@ modes, etc.
 
 (defun cb-setup-python ()
   "Setups all not-LSP Python-related stuff."
-  (setq python-shell-interpreter "ipython"
-	python-shell-interpreter-args "--simple-prompt -i"
-	comint-scroll-to-bottom-on-input t
-	comint-scroll-to-bottom-on-output t)
   (use-package emacs
+    :config
+    (setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args "--simple-prompt -i"
+	  comint-scroll-to-bottom-on-input t
+	  comint-scroll-to-bottom-on-output t)
     :hook
     (inferior-python-mode . (lambda () (setq tab-width 4))))
   (use-package pyvenv
