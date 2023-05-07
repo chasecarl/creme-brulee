@@ -239,6 +239,9 @@ modes, etc.
 (defun cb--setup-company ()
   "Setups company-mode."
   (use-package company
+    :config
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "M-n") nil)
     :hook (after-init . global-company-mode)))
 
 
