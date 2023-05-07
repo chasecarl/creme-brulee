@@ -453,7 +453,9 @@ modes, etc.
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "--simple-prompt -i"
 	  comint-scroll-to-bottom-on-input t
-	  comint-scroll-to-bottom-on-output t)
+	  comint-scroll-to-bottom-on-output t
+	  ;; Emacs 29!
+	  python-shell-dedicated 'project)
     :hook
     (inferior-python-mode . (lambda () (setq tab-width 4))))
   (use-package pyvenv
