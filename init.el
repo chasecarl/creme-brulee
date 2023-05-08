@@ -473,13 +473,20 @@ modes, etc.
     (inferior-python-mode . python-mls-mode)))
 
 
+(defun cb-setup-web ()
+  "Setups all web-related stuff."
+  (use-package emacs
+    :mode ("\\.tsx?\\'" . typescript-ts-mode)))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
   (cb--setup-tree-sitter)
   (cb-setup-shell-and-terminal)
   (cb-setup-lsp)
-  (cb-setup-python))
+  (cb-setup-python)
+  (cb-setup-web))
 
 
 (defun cb-reading ()
