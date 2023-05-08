@@ -466,6 +466,9 @@ modes, etc.
 	  python-mls-multiline-history-modifier nil)
     (define-key python-mls-mode-map [remap next-line] nil)
     (define-key python-mls-mode-map [remap previous-line] nil)
+    :bind
+    (:map python-mls-mode-map (("M-p" . comint-previous-matching-input-from-input)
+			       ("M-n" . comint-next-matching-input-from-input)))
     :hook
     (inferior-python-mode . python-mls-mode)))
 
