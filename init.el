@@ -463,12 +463,9 @@ modes, etc.
     :demand t
     :config
     (setq python-mls-save-command-history t
-	  python-mls-multiline-history-modifier nil
-	  ;; TODO: this should remove C-n/p remap but it doesn't :(
-	  python-mls-mode-map
-	  `(keymap ,(seq-filter
-		     (lambda (el) (not (equal (car el) 'remap)))
-		     (cdr python-mls-mode-map))))
+	  python-mls-multiline-history-modifier nil)
+    (define-key python-mls-mode-map [remap next-line] nil)
+    (define-key python-mls-mode-map [remap previous-line] nil)
     :hook
     (inferior-python-mode . python-mls-mode)))
 
