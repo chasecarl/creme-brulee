@@ -492,6 +492,7 @@ modes, etc.
     (inferior-python-mode . (lambda () (setq tab-width 4))))
   (use-package pyvenv
     :config
+    (setq pyvenv-mode-line-indicator nil)
     (advice-add #'eglot-ensure :around #'(lambda (orig-fun &rest args)
 					   (let ((venv-path (cb-project-poetry-venv-path)))
 					     (when venv-path
