@@ -465,6 +465,14 @@ modes, etc.
       (apply 'setenv (split-string line "=" t)))))
 
 
+(defun cb-project-poetry-venv-path ()
+  "Returns the current project Poetry venv path."
+  (interactive)
+  (let ((path-line
+	 (car (seq-filter (lambda (el) (equal (substring el 0 5) "Path:"))
+			  (split-string (shell-command-to-string "poetry env info") "\n" t)))))
+    (cadr (split-string path-line))))
+
 
 (defun cb-setup-python ()
   "Setups all not-LSP Python-related stuff."
@@ -484,8 +492,12 @@ modes, etc.
     (inferior-python-mode . (lambda () (setq tab-width 4))))
   (use-package pyvenv
     :config
+    (advice-add #'eglot-ensure :around #'(lambda (orig-fun &rest args)
+					   (let ((venv-path (cb-project-poetry-venv-path)))
+					     (when venv-path
+					       (pyvenv-activate venv-path)))
+					   (apply orig-fun args)))
     (pyvenv-mode t))
-  ;; TODO: advice `pyvenv-activate' to use poetry env, and do it before eglot
   (use-package python-mls
     :demand t
     :config
