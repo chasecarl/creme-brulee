@@ -449,6 +449,22 @@ modes, etc.
 			      (set-buffer-process-coding-system 'utf-8-unix
 								'utf-8-unix))))
 
+(defun cb-read-lines (file-path)
+  "Return a list of lines of a `file-path' file."
+  (with-temp-buffer
+    (info-insert-file-contents file-path)
+    (split-string (buffer-string) "\n" t)))
+
+
+(defun cb-expand-project-dotenv ()
+  "Sets environment variables of the current project."
+  (interactive)
+  (let* ((dotenv-path (expand-file-name ".env" (project-root (project-current))))
+	 (dotenv (cb-read-lines dotenv-path)))
+    (dolist (line dotenv)
+      (apply 'setenv (split-string line "=" t)))))
+
+
 
 (defun cb-setup-python ()
   "Setups all not-LSP Python-related stuff."
@@ -460,6 +476,10 @@ modes, etc.
 	  comint-scroll-to-bottom-on-output t
 	  ;; Emacs 29!
 	  python-shell-dedicated 'project)
+    ;; :before doesn't work for some reason
+    (advice-add #'run-python :around #'(lambda (orig-fun &rest args)
+					 (cb-expand-project-dotenv)
+					 (apply orig-fun args)))
     :hook
     (inferior-python-mode . (lambda () (setq tab-width 4))))
   (use-package pyvenv
