@@ -176,13 +176,14 @@
 Shouldn't have any package configuration in, only setting variables, activating
 modes, etc.
 "
-  (setq inhibit-startup-message t)
   (cb--adjust-visuals)
   (cb--minimize-frame)
   (pixel-scroll-precision-mode)
   (save-place-mode)
   (cb-setup-font)
   (use-package emacs
+    :config
+    (setq inhibit-startup-message t)
     :hook ((prog-mode . (lambda () (setq truncate-lines t)))
 	   (comint-mode . (lambda () (setq truncate-lines t)))))
   (cb--setup-line-numbers))
