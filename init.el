@@ -184,6 +184,7 @@ modes, etc.
   (use-package emacs
     :config
     (setq inhibit-startup-message t)
+    (setq transient-enable-popup-navigation nil)
     :hook ((prog-mode . (lambda () (setq truncate-lines t)))
 	   (comint-mode . (lambda () (setq truncate-lines t)))))
   (cb--setup-line-numbers))
