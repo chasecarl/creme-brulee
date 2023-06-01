@@ -475,7 +475,9 @@ modes, etc.
   (add-to-list 'cb-no-line-number-modes 'term-mode)
   (add-hook 'term-exec-hook (lambda ()
 			      (set-buffer-process-coding-system 'utf-8-unix
-								'utf-8-unix))))
+								'utf-8-unix)))
+  (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color"))))
+
 
 (defun cb-read-lines (file-path)
   "Return a list of lines of a `file-path' file."
