@@ -549,11 +549,17 @@ modes, etc.
     :mode ("\\.tsx?\\'" . typescript-ts-mode)))
 
 
+(defun cb-markup ()
+  "Setups all markup languages."
+  (use-package yaml-mode))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
   (cb--setup-tree-sitter)
   (cb-setup-shell-and-terminal)
+  (cb-markup)
   (cb-setup-lsp)
   (cb-setup-python)
   (cb-setup-web))
