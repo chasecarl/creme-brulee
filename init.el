@@ -130,7 +130,12 @@
 
   (defun cb-remove-advice-from-functions (funcs)
     (dolist (func funcs)
-      (advice-mapc (lambda (advice _props) (advice-remove func advice)) func))))
+      (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
+
+  (use-package winum
+    :init (winum-set-keymap-prefix (kbd "C-c"))
+    :config (winum-mode))
+  )
   ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows)))
 
 
