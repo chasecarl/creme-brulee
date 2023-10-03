@@ -559,12 +559,36 @@ modes, etc.
   (use-package yaml-mode))
 
 
+(defun cb-setup-lisp ()
+  "Setups all lisp-related stuff."
+  (use-package paredit
+    :hook ((emacs-lisp-mode
+	    eval-expression-minibuffer-setup
+	    ielm
+	    lisp-mode
+	    lisp-interaction-mode
+	    scheme-mode)
+	   . enable-paredit-mode)
+    :config
+    (defun cb--paredit-RET ()
+      "Wraps `paredit-RET' to provide a sensible minibuffer exprience.
+
+Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_for_evalexpression_mini/jjq0jen"
+      (interactive)
+      (if (minibufferp)
+	  (read--expression-try-read)
+	(paredit-RET)))
+    :bind (:map paredit-mode-map ("<return>" . cb--paredit-RET))
+    ))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
   (cb--setup-tree-sitter)
   (cb-setup-shell-and-terminal)
   (cb-markup)
+  (cb-setup-lisp)
   (cb-setup-lsp)
   (cb-setup-python)
   (cb-setup-web))
