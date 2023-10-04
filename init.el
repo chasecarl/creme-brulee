@@ -70,7 +70,9 @@
   (tool-bar-mode -1)
   (tooltip-mode -1)
   (set-fringe-mode 10)
-  (cb-setup-theme))
+  (add-to-list 'default-frame-alist '(undecorated . t))
+  (cb-setup-theme)
+  )
 
 
 (defun cb--minimize-frame ()
