@@ -383,7 +383,13 @@ modes, etc.
 
 
 (defun cb--setup-magit ()
-  (use-package magit))
+  (use-package magit
+    :config (add-to-list 'magit-blame-styles
+			 '(margin
+			   (margin-format    . (" %C %a" " %s%f" " %H"))
+			   (margin-width     . 30)
+			   (margin-face      . magit-blame-margin)
+			   (margin-body-face . (magit-blame-dimmed))))))
 
 
 (defun cb--setup-eglot ()
