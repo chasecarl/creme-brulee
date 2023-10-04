@@ -127,6 +127,7 @@
 	res)))
   (advice-add 'transient--redisplay :around #'cb--ensure-transient-hidden-popup)
   (advice-add 'cb-manage-windows :around #'cb--ensure-transient-hidden-popup-2)
+  ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows))
 
   (defun cb-remove-advice-from-functions (funcs)
     (dolist (func funcs)
@@ -135,8 +136,23 @@
   (use-package winum
     :init (winum-set-keymap-prefix (kbd "C-c"))
     :config (winum-mode))
+
+  (use-package window-purpose
+    ;; conflicts with `persp-mode-prefix-key'
+    :bind (:map purpose-mode-map ("C-x j" . nil))
+    :config
+    ;; TODO: adjust the `repl' purpose definition (e.g. now shell is also a repl)
+    (dolist (purpose-mapping '((comint-mode . repl)
+			       (conf-mode . conf)
+			       (org-mode . org)
+			       (python-mode . python)
+			       (python-ts-mode . python)
+			       (yaml-mode . yaml)
+			       (yaml-ts-mode . yaml)))
+      (add-to-list 'purpose-user-mode-purposes purpose-mapping))
+    (purpose-compile-user-configuration)
+    (purpose-mode))
   )
-  ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows)))
 
 
 (defun cb-rotate-windows (arg)
