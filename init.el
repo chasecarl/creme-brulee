@@ -46,11 +46,12 @@
   (use-package emacs
     :config
     (require-theme 'modus-themes)
-    (setq modus-themes-inhibit-reload nil
+    (setq modus-themes-completions '((selection . (accented intense semibold))
+				     (popup . (accented semibold)))
+	  modus-themes-fringes nil
+	  modus-themes-inhibit-reload nil
 	  modus-themes-links '(neutral-underline)
 	  modus-themes-mode-line '(accented borderless)
-	  modus-themes-completions '((selection . (accented intense semibold))
-				     (popup . (accented semibold)))
 	  modus-themes-markup '(background intense italic)
 	  modus-themes-paren-match '(intense)
 	  modus-themes-region '(accented bg-only)
