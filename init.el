@@ -597,6 +597,12 @@ modes, etc.
     :mode ("\\.tsx?\\'" . typescript-ts-mode)))
 
 
+(defun cb-setup-debug ()
+  "Setups the debugger."
+  (use-package realgud)
+  (use-package realgud-ipdb))
+
+
 (defun cb-markup ()
   "Setups all markup languages."
   (use-package yaml-mode))
@@ -634,7 +640,9 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-lisp)
   (cb-setup-lsp)
   (cb-setup-python)
-  (cb-setup-web))
+  (cb-setup-web)
+  (cb-setup-debug)
+  )
 
 
 (defun cb-reading ()
