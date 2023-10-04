@@ -143,9 +143,9 @@
 
   (use-package window-purpose
     :config
-    ;; TODO: adjust the `repl' purpose definition (e.g. now shell is also a repl)
-    (dolist (purpose-mapping '((comint-mode . repl)
-			       (conf-mode . conf)
+    ;; TODO: adjust the `repl' purpose definition (e.g. now it's too python-specific)
+    (dolist (purpose-mapping '((conf-mode . conf)
+			       (inferior-python-mode . repl)
 			       (org-mode . org)
 			       (python-mode . python)
 			       (python-ts-mode . python)
