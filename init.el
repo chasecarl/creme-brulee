@@ -371,7 +371,9 @@ modes, etc.
 
   ;; C-x w ^ f	tear-off-window
   ;; C-x w ^ t	tab-window-detach
-  (global-set-key (kbd "C-x w") 'cb-manage-windows))
+  (global-set-key (kbd "C-x w") 'cb-manage-windows)
+  (global-set-key (kbd "M-z") 'zap-up-to-char)
+  )
 
 
 (defun cb-misc ()
