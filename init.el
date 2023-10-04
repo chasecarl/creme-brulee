@@ -376,7 +376,8 @@ modes, etc.
 
 (defun cb-misc ()
   "Miscellaneous stuff."
-   (cb--setup-custom))
+  (cb--setup-custom))
+
 
 
 (defun cb--setup-magit ()
