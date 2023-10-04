@@ -235,8 +235,9 @@ modes, etc.
   (cb-setup-font)
   (use-package emacs
     :config
-    (setq inhibit-startup-message t)
-    (setq transient-enable-popup-navigation nil)
+    (setq inhibit-startup-message t
+	  scroll-preserve-screen-position t
+	  transient-enable-popup-navigation nil)
     :hook ((prog-mode . (lambda () (setq truncate-lines t)))
 	   (comint-mode . (lambda () (setq truncate-lines t)))))
   (cb--setup-line-numbers))
