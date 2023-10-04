@@ -8,6 +8,7 @@ transient/
 combobulate/
 pyhist/
 layouts/
+node_modules/
 **/*~
 history
 custom.el
@@ -15,3 +16,4 @@ places
 nov-places
 persp-state.el
 history
+package*.json
