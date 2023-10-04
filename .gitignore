@@ -6,6 +6,7 @@ elpa/
 tree-sitter/
 transient/
 combobulate/
+pyhist/
 *.el~
 history
 custom.el
@@ -13,4 +14,3 @@ places
 nov-places
 persp-state.el
 history
-pyhist-Python

@@ -21,7 +21,10 @@
   (defvar cb-after-packages-load ()
     "A list of all functions that run after all packages are loaded.")
   (defvar cb-no-line-number-modes ()
-    "A list of modes without line numbers."))
+    "A list of modes without line numbers.")
+  (defvar cb--warning-type 'creme-brulee
+    "The warning type that appears in warnings from this file.")
+  )
 
 
 (defun cb--setup-custom ()
@@ -570,18 +573,35 @@ modes, etc.
 					       (pyvenv-activate venv-path)))
 					   (apply orig-fun args)))
     (pyvenv-mode t))
-  (use-package python-mls
-    :demand t
-    :config
-    (setq python-mls-save-command-history t
-	  python-mls-multiline-history-modifier nil)
-    (define-key python-mls-mode-map [remap next-line] nil)
-    (define-key python-mls-mode-map [remap previous-line] nil)
-    :bind
-    (:map python-mls-mode-map (("M-p" . comint-previous-matching-input-from-input)
-			       ("M-n" . comint-next-matching-input-from-input)))
-    :hook
-    (inferior-python-mode . python-mls-mode))
+
+  (let ((command-history-dirname "pyhist/"))
+    (use-package python-mls
+      :demand t
+      :init
+      (let ((command-history-dirpath (expand-file-name
+				      command-history-dirname
+				      user-emacs-directory)))
+	(unless (file-directory-p command-history-dirpath)
+	  (if (not (file-regular-p command-history-dirpath))
+	      (make-directory command-history-dirpath)
+	    (lwarn
+	     cb--warning-type
+	     :warning
+	     (concat "The path %s points to a regular file"
+		     "; Python history files will only use its name as a prefix")
+	     command-history-dirpath))))
+      :config
+      (setq python-mls-command-history-file command-history-dirname
+	    python-mls-save-command-history t
+	    python-mls-multiline-history-modifier nil)
+      (define-key python-mls-mode-map [remap next-line] nil)
+      (define-key python-mls-mode-map [remap previous-line] nil)
+      :bind
+      (:map python-mls-mode-map (("M-p" . comint-previous-matching-input-from-input)
+				 ("M-n" . comint-next-matching-input-from-input)))
+      :hook
+      (inferior-python-mode . python-mls-mode))
+    )
 
   (use-package python-pytest
     :config
