@@ -651,6 +651,11 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
     ))
 
 
+(defun cb-setup-comint ()
+  "Setups comint."
+  (setq comint-input-ring-size 10000))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
@@ -662,6 +667,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-python)
   (cb-setup-web)
   (cb-setup-debug)
+  (cb-setup-comint)
   )
 
 
