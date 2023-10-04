@@ -142,8 +142,6 @@
     :config (winum-mode))
 
   (use-package window-purpose
-    ;; conflicts with `persp-mode-prefix-key'
-    :bind (:map purpose-mode-map ("C-x j" . nil))
     :config
     ;; TODO: adjust the `repl' purpose definition (e.g. now shell is also a repl)
     (dolist (purpose-mapping '((comint-mode . repl)
@@ -190,14 +188,17 @@ Bost's solution' section)."
     :init
     (setq persp-state-default-file
 	  (expand-file-name "persp-state.el" user-emacs-directory)
-	  persp-mode-prefix-key (kbd "C-x j"))
+	  persp-mode-prefix-key (kbd "C-x l"))
     (persp-mode)
     (when (file-exists-p persp-state-default-file)
       (persp-state-load persp-state-default-file))
     (persp-switch "main")
     :bind
     (("C-x b" . persp-switch-to-buffer*)
-     ("C-x k" . persp-kill-buffer*))
+     ("C-x k" . persp-kill-buffer*)
+     :map perspective-map
+     ;; TODO: consider unbinding "s"
+     ("l" . persp-switch))
     :config
     ;; `:hook' with `kill-emacs' fails on missing mode called `perspective'
     (add-hook 'kill-emacs-hook #'persp-state-save)))
