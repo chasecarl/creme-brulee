@@ -709,10 +709,6 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
 (cb-startup)
 (cb-package-management)
 ;; org setup should be before all other packages
-;; Important: I'm now on Emacs commit b4afee03193575c3812c6f9704cd08d0dc852e5a
-;; when I use more recent version, say, 3899acbb3367984d66c7484a208b40a6851f4cc2
-;; I get 'org version mismatch' despite clearing the straight cache, and
-;; disabling compilation
 (cb-org)
 (cb-global-bindings)
 (cb-misc)
