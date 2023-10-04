@@ -581,7 +581,14 @@ modes, etc.
     (:map python-mls-mode-map (("M-p" . comint-previous-matching-input-from-input)
 			       ("M-n" . comint-next-matching-input-from-input)))
     :hook
-    (inferior-python-mode . python-mls-mode)))
+    (inferior-python-mode . python-mls-mode))
+
+  (use-package python-pytest
+    :config
+    (defalias 'pytest-jump-to-error
+      ;; TODO: debug or find/write a better implementation
+      (kmacro "C-a C-SPC M-f M-w C-s <return> : : RET C-SPC C-s <return> SPC - RET C-b C-b M-w C-r <return> = = SPC M-y C-n C-n RET RET C-s <return> M-y C-n RET RET")))
+  )
 
 
 (defun cb-setup-web ()
