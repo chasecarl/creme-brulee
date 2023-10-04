@@ -7,7 +7,7 @@ tree-sitter/
 transient/
 combobulate/
 pyhist/
-*.el~
+**/*~
 history
 custom.el
 places
