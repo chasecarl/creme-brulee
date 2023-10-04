@@ -388,7 +388,6 @@ modes, etc.
   (cb--setup-custom))
 
 
-
 (defun cb--setup-magit ()
   (use-package magit
     :config (add-to-list 'magit-blame-styles
@@ -660,6 +659,13 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (setq comint-input-ring-size 10000))
 
 
+(defun cb-setup-search ()
+  "Setups search."
+  (use-package rg
+    :config (rg-enable-menu))
+  )
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb--setup-magit)
@@ -672,6 +678,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-web)
   (cb-setup-debug)
   (cb-setup-comint)
+  (cb-setup-search)
   )
 
 
