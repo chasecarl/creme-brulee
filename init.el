@@ -299,7 +299,14 @@ modes, etc.
 (defun cb-completion ()
   "Loads and configures completion backend."
   (cb--setup-vertico)
-  (cb--setup-company))
+  (cb--setup-company)
+  (define-key completion-list-mode-map (kbd "C-<return>")
+	      (lambda ()
+		(interactive)
+		(choose-completion nil nil t)
+		(with-current-buffer completion-reference-buffer
+		  (electric-newline-and-maybe-indent))))
+  )
 
 
 (defun cb-org ()
