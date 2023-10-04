@@ -549,7 +549,10 @@ modes, etc.
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "--simple-prompt -i"
 	  comint-scroll-to-bottom-on-input t
-	  comint-scroll-to-bottom-on-output t
+	  ;; if the following are t, the wordy commands become unbearably slow
+	  ;; because of redisplays
+	  comint-scroll-to-bottom-on-output nil
+	  comint-scroll-show-maximum-output nil
 	  ;; Emacs 29!
 	  python-shell-dedicated 'project)
     ;; :before doesn't work for some reason
