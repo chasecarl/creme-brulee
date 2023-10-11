@@ -685,7 +685,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-lsp)
   (cb-setup-python)
   (cb-setup-web)
-  (cb-setup-debug)
+  ;; (cb-setup-debug)
   (cb-setup-comint)
   (cb-setup-search)
   )
