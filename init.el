@@ -209,7 +209,8 @@ Bost's solution' section)."
 (defun cb-workspace-management ()
   "Manage windows, buffers, layouts, etc."
   (cb-window-management)
-  (cb-layout-management))
+  (cb-layout-management)
+  )
 
 
 (defun cb-setup-font ()
@@ -240,8 +241,10 @@ modes, etc.
     (setq inhibit-startup-message t
 	  scroll-preserve-screen-position t
 	  transient-enable-popup-navigation nil)
-    :hook ((prog-mode . (lambda () (setq truncate-lines t)))
-	   (comint-mode . (lambda () (setq truncate-lines t)))))
+    :hook ((prog-mode
+	    comint-mode)
+	   . (lambda () (setq truncate-lines t)))
+    )
   (cb--setup-line-numbers))
 
 
@@ -403,8 +406,10 @@ modes, etc.
   ;;       see eglot-server-programs variable
   (use-package eglot
     :straight (:type built-in)
-    :hook ((python-mode . eglot-ensure)
-	   (python-ts-mode . eglot-ensure)
+    :hook (((python-mode
+	     python-ts-mode
+	     )
+	    . eglot-ensure)
 	   (prog-mode . hs-minor-mode))
     :bind (:map eglot-mode-map ("C-c r" . eglot-rename)))
 
@@ -500,12 +505,14 @@ modes, etc.
     :straight (combobulate :type git
 			   :host github
 			   :repo "mickeynp/combobulate")
-    :hook ((python-ts-mode . combobulate-mode)
-	   (js-ts-mode . combobulate-mode)
-	   (css-ts-mode . combobulate-mode)
-	   (yaml-ts-mode . combobulate-mode)
-	   (typescript-ts-mode . combobulate-mode)
-	   (tsx-ts-mode . combobulate-mode)))
+    :hook ((python-ts-mode
+	    js-ts-mode
+	    css-ts-mode
+	    yaml-ts-mode
+	    typescript-ts-mode
+	    tsx-ts-mode
+	    )
+	   . combobulate-mode))
 
   ;; Not using `:mode' above because yaml config is not quite `treesit' config,
   ;; and using it defers `cb-setup-install-grammars'
@@ -524,7 +531,7 @@ modes, etc.
 
 
 (defun cb-read-lines (file-path)
-  "Return a list of lines of a `file-path' file."
+  "Return a list of lines of a file at FILE-PATH."
   (with-temp-buffer
     (info-insert-file-contents file-path)
     (split-string (buffer-string) "\n" t)))
@@ -567,6 +574,7 @@ modes, etc.
 					 (apply orig-fun args)))
     :hook
     (inferior-python-mode . (lambda () (setq tab-width 4))))
+
   (use-package pyvenv
     :config
     (setq pyvenv-mode-line-indicator nil)
@@ -639,7 +647,8 @@ modes, etc.
 	    ielm
 	    lisp-mode
 	    lisp-interaction-mode
-	    scheme-mode)
+	    scheme-mode
+	    )
 	   . enable-paredit-mode)
     :config
     (defun cb--paredit-RET ()
