@@ -60,7 +60,7 @@
 	  modus-themes-region '(accented bg-only)
 	  modus-themes-org-blocks 'tinted-background
 	  modus-themes-org-agenda '((header-date . (bold-today))))
-    (load-theme 'modus-operandi)))
+    (load-theme 'modus-vivendi)))
 
 
 (defun cb--adjust-visuals ()
