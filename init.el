@@ -245,7 +245,9 @@ modes, etc.
 	    comint-mode)
 	   . (lambda () (setq truncate-lines t)))
     )
-  (cb--setup-line-numbers))
+  (cb--setup-line-numbers)
+  (setq-default indent-tabs-mode nil)
+  )
 
 
 (defun cb-package-management ()
