@@ -366,7 +366,21 @@ modes, etc.
     (setq-default org-download-image-dir
 		  (expand-file-name "download" org-directory))
     :bind (:map org-mode-map (("C-c i y" . org-download-yank)
-			      ("C-c i r" . org-display-inline-images)))))
+			      ("C-c i r" . org-display-inline-images))))
+
+  (use-package emacs
+    :preface
+    (defun org-summary-todo (n-done n-not-done)
+      "Switch entry to DONE when all subentries are done, to TODO otherwise.
+
+Taken from info:org#Breaking Down Tasks
+"
+      (let (org-log-done org-todo-log-states)   ; turn off logging
+        (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+    :init
+    (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
+    )
+  )
 
 
 (defun cb-global-bindings ()
