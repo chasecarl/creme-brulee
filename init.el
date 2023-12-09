@@ -348,7 +348,9 @@ modes, etc.
 	    org-journal-date-prefix "#+TITLE: "
 	    org-journal-time-prefix "* "
 	    org-journal-file-format "%Y-%m-%d.org"
-	    org-journal-enable-agenda-integration t)
+            org-journal-carryover-items ""
+            org-agenda-files (list org-journal-dir)
+            )
       (define-key org-journal-mode-map
 		  (kbd (concat my-org-journal-prefix-key " j"))
 		  'org-journal-open-current-journal-file)
