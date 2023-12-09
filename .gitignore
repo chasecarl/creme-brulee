@@ -1,6 +1,5 @@
 auto-save-list/
 eln-cache/
-straight/
 warnings/
 elpa/
 tree-sitter/
@@ -18,3 +17,7 @@ persp-state.el
 history
 package*.json
 projects
+straight/*
+!straight/versions
+straight/versions/*
+!straight/versions/default.el
