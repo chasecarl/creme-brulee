@@ -641,7 +641,12 @@ Taken from info:org#Breaking Down Tasks
 (defun cb-setup-web ()
   "Setups all web-related stuff."
   (use-package emacs
-    :mode ("\\.tsx?\\'" . typescript-ts-mode)))
+    :mode ("\\.tsx?\\'" . typescript-ts-mode)
+    :hook
+    ((css-mode html-mode js-mode js-ts-mode) . (lambda () (setq fill-column 80)))
+    ((css-mode html-mode) . (lambda () (setq sgml-basic-offset 4)))
+    )
+  )
 
 
 (defun cb-setup-debug ()
