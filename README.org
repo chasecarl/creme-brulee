@@ -1,0 +1,10 @@
+* Crème brûlée
+This is my minimal Emacs configuration.
+* Installation
+Clone this repo either to:
+- [Emacs 28.x and lower] your ~/.emacs.d or ~/.config/emacs
+- [Emacs 29+] in addition to the above, you can use any directory
+But you will have to launch Emacs with ~--init-directory /path/to/cloned/repo~.
+* Usage
+Launch Emacs, it will clone (and probably compile) all the packages
+used by Crème brûlée.
