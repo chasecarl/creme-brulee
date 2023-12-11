@@ -332,7 +332,10 @@ modes, etc.
 	  org-agenda-span 'fortnight
 	  org-agenda-start-on-weekday 0
 	  org-edit-src-content-indentation 0
-	  org-element-use-cache nil)  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
+	  org-element-use-cache nil  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
+          org-log-redeadline 'time
+          org-log-reschedule 'time
+          )
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
     :bind (("C-c a" . org-agenda)))  ; global
