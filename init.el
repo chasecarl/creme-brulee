@@ -649,7 +649,7 @@ Taken from info:org#Breaking Down Tasks
     :mode ("\\.tsx?\\'" . typescript-ts-mode)
     :hook
     ((css-mode html-mode js-mode js-ts-mode) . (lambda () (setq fill-column 80)))
-    ((css-mode html-mode) . (lambda () (setq sgml-basic-offset 4)))
+    ((css-mode html-mode) . (lambda () (setq sgml-basic-offset 2)))
     )
   )
 
