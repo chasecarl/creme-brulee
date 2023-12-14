@@ -425,7 +425,11 @@ Taken from info:org#Breaking Down Tasks
   (cb--setup-custom))
 
 
-(defun cb--setup-magit ()
+(defun cb-setup-git ()
+  (use-package emacs
+    :init (setq git-commit-summary-max-length 50)
+    :hook (git-commit-mode . (lambda () (setq fill-column 72)))
+    )
   (use-package magit
     :config (add-to-list 'magit-blame-styles
 			 '(margin
@@ -716,7 +720,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
 
 (defun cb-dev ()
   "Development stuff."
-  (cb--setup-magit)
+  (cb-setup-git)
   (cb--setup-tree-sitter)
   (cb-setup-shell-and-terminal)
   (cb-markup)
