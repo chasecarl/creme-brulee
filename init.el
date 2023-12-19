@@ -351,6 +351,7 @@ modes, etc.
           cb-organizer-path (expand-file-name "organizer.org" org-directory)
           org-default-notes-file cb-organizer-path
           org-agenda-files (list cb-organizer-path)
+          org-refile-targets '((cb-organizer-path . (:maxlevel . 6)))
           )
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
