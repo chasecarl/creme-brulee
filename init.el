@@ -348,10 +348,16 @@ modes, etc.
 	  org-element-use-cache nil  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
           org-log-redeadline 'time
           org-log-reschedule 'time
+          cb-organizer-path (expand-file-name "organizer.org" org-directory)
+          org-default-notes-file cb-organizer-path
+          org-agenda-files (list cb-organizer-path)
           )
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
-    :bind (("C-c a" . org-agenda)))  ; global
+    :bind (
+           ("C-c a" . org-agenda)
+           ("C-c c" . org-capture)  ; TODO: seems like it may be used in some keymap - check
+           ))
 
   (let ((my-org-journal-prefix-key "C-c j"))
     (use-package org-journal
@@ -365,7 +371,6 @@ modes, etc.
 	    org-journal-time-prefix "* "
 	    org-journal-file-format "%Y-%m-%d.org"
             org-journal-carryover-items ""
-            org-agenda-files (list org-journal-dir)
             )
       (define-key org-journal-mode-map
 		  (kbd (concat my-org-journal-prefix-key " j"))
