@@ -354,13 +354,19 @@ modes, etc.
           org-default-notes-file cb-organizer-path
           org-agenda-files (list cb-organizer-path)
           org-refile-targets '((cb-organizer-path . (:maxlevel . 6)))
-          ;; like the default, but category width for agenda is `cb-agenda-category-width'
+          ;; like the default, but category width is `cb-agenda-category-width'
           org-agenda-prefix-format `((agenda . ,(format
                                                  " %%i %%-%d:c%%?-12t%% s"
                                                  cb-agenda-category-width))
-                                     (todo . " %i %-12:c")
-                                     (tags . " %i %-12:c")
-                                     (search . " %i %-12:c"))
+                                     (todo . ,(format
+                                               " %%i %%-%d:c"
+                                               cb-agenda-category-width))
+                                     (tags . ,(format
+                                               " %%i %%-%d:c"
+                                               cb-agenda-category-width))
+                                     (search . ,(format
+                                                 " %%i %%-%d:c"
+                                                 cb-agenda-category-width)))
           )
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
