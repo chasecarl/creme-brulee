@@ -685,9 +685,12 @@ Taken from info:org#Breaking Down Tasks
   "Setups all web-related stuff."
   (use-package emacs
     :mode ("\\.tsx?\\'" . typescript-ts-mode)
+    :config
+    (setq css-indent-offset 2
+          sgml-basic-offset 2
+          )
     :hook
     ((css-mode html-mode js-mode js-ts-mode) . (lambda () (setq fill-column 80)))
-    ((css-mode html-mode) . (lambda () (setq sgml-basic-offset 2)))
     )
   )
 
