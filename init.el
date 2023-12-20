@@ -24,6 +24,8 @@
     "A list of modes without line numbers.")
   (defvar cb--warning-type 'creme-brulee
     "The warning type that appears in warnings from this file.")
+  (defvar cb-agenda-category-width 18
+    "The width of the category column in the agenda view.")
   )
 
 
@@ -352,6 +354,13 @@ modes, etc.
           org-default-notes-file cb-organizer-path
           org-agenda-files (list cb-organizer-path)
           org-refile-targets '((cb-organizer-path . (:maxlevel . 6)))
+          ;; like the default, but category width for agenda is `cb-agenda-category-width'
+          org-agenda-prefix-format `((agenda . ,(format
+                                                 " %%i %%-%d:c%%?-12t%% s"
+                                                 cb-agenda-category-width))
+                                     (todo . " %i %-12:c")
+                                     (tags . " %i %-12:c")
+                                     (search . " %i %-12:c"))
           )
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
