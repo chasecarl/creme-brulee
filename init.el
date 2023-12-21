@@ -368,6 +368,8 @@ modes, etc.
                                                  " %%i %%-%d:c"
                                                  cb-agenda-category-width)))
           )
+    ;; see https://emacs.stackexchange.com/a/76352
+    (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
     :hook (org-mode . auto-fill-mode)
     :straight (:type built-in)
     :bind (
