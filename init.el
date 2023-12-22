@@ -333,6 +333,10 @@ modes, etc.
 		(choose-completion nil nil t)
 		(with-current-buffer completion-reference-buffer
 		  (electric-newline-and-maybe-indent))))
+
+  (use-package which-key
+    :config
+    (which-key-mode 1))
   )
 
 
