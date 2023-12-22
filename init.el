@@ -379,6 +379,7 @@ modes, etc.
     :bind (
            ("C-c a" . org-agenda)
            ("C-c c" . org-capture)  ; TODO: seems like it may be used in some keymap - check
+           ("C-c s" . org-store-link)
            ))
 
   (let ((my-org-journal-prefix-key "C-c j"))
@@ -744,7 +745,10 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
 (defun cb-setup-search ()
   "Setups search."
   (use-package rg
-    :config (rg-enable-menu))
+    :config
+    (setq rg-keymap-prefix (kbd  "C-c r"))
+    (rg-enable-menu)
+    )
   )
 
 
