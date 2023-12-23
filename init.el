@@ -371,6 +371,10 @@ modes, etc.
                                      (search . ,(format
                                                  " %%i %%-%d:c"
                                                  cb-agenda-category-width)))
+          org-global-properties
+          '(("Effort_ALL" . "0 0:10 0:15 0:30 0:45 1:00 1:30 2:00 2:30 3:00 4:00"))
+          org-columns-default-format
+          "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
           )
     ;; see https://emacs.stackexchange.com/a/76352
     (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
