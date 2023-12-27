@@ -376,6 +376,8 @@ modes, etc.
           org-columns-default-format
           "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
           org-agenda-skip-deadline-if-done t
+          org-agenda-log-mode-items '(clock)
+          org-agenda-start-with-log-mode t
           )
     ;; see https://emacs.stackexchange.com/a/76352
     (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
