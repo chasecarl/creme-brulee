@@ -455,9 +455,20 @@ Taken from info:org#Breaking Down Tasks
   )
 
 
+(defun cb-setup-path ()
+  "Adds $HOME/.local/bin to the PATH envvar and to `exec-path'."
+  (let ((local-bin-path (file-name-concat (getenv "HOME") ".local" "bin"))
+        (path-env-name "PATH"))
+    (setenv path-env-name (concat local-bin-path path-separator (getenv path-env-name)))
+    (add-to-list 'exec-path local-bin-path))
+)
+
+
 (defun cb-misc ()
   "Miscellaneous stuff."
-  (cb--setup-custom))
+  (cb--setup-custom)
+  (cb-setup-path)
+  )
 
 
 (defun cb-setup-git ()
