@@ -651,7 +651,9 @@ Taken from info:org#Breaking Down Tasks
 	  comint-scroll-to-bottom-on-output nil
 	  comint-scroll-show-maximum-output nil
 	  ;; Emacs 29!
-	  python-shell-dedicated 'project)
+	  python-shell-dedicated 'project
+          toml-ts-mode-indent-offset 4
+          )
     ;; :before doesn't work for some reason
     (advice-add #'run-python :around #'(lambda (orig-fun &rest args)
 					 (cb-expand-project-dotenv)
