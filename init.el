@@ -205,8 +205,7 @@ Bost's solution' section)."
     (("C-x b" . persp-switch-to-buffer*)
      ("C-x k" . persp-kill-buffer*)
      :map perspective-map
-     ;; TODO: consider unbinding "s"
-     ("l" . persp-switch))
+     ("l" . persp-switch-last))
     :config
     ;; `:hook' with `kill-emacs' fails on missing mode called `perspective'
     (add-hook 'kill-emacs-hook #'persp-state-save)))
