@@ -710,13 +710,14 @@ Taken from info:org#Breaking Down Tasks
 (defun cb-setup-web ()
   "Setups all web-related stuff."
   (use-package emacs
-    :mode ("\\.tsx?\\'" . typescript-ts-mode)
+    :mode (("\\.[jt]sx?\\'" . tsx-ts-mode)
+           ("\\.json\\'" . tsx-ts-mode))
     :config
     (setq css-indent-offset 2
           sgml-basic-offset 2
           )
     :hook
-    ((css-mode html-mode js-mode js-ts-mode) . (lambda () (setq fill-column 80)))
+    ((css-mode html-mode tsx-ts-mode) . (lambda () (setq fill-column 80)))
     )
   )
 
