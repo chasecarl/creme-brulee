@@ -490,7 +490,8 @@ Taken from info:org#Breaking Down Tasks
   (use-package eglot
     :straight (:type built-in)
     :hook (((python-mode
-	     python-ts-mode
+	     python-ts-mode  ;; requires a python language server (e.g. pyright)
+             tsx-ts-mode  ;; requires typescript-language-server
 	     )
 	    . eglot-ensure)
 	   (prog-mode . hs-minor-mode))
