@@ -78,6 +78,33 @@
   (set-fringe-mode 10)
   (add-to-list 'default-frame-alist '(undecorated . t))
   (cb-setup-theme)
+  ;; the modeline is the same as the default + winum + vc branch name are truncated + no
+  ;; minor modes + purpose
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (format winum-format
+                           (winum-get-number-string)))
+                  mode-line-front-space
+                  (:propertize
+                   (""
+                    mode-line-mule-info
+                    mode-line-client
+                    mode-line-modified
+                    mode-line-remote)
+                   display
+                   (min-width
+                    (5.0)))
+                  mode-line-frame-identification
+                  mode-line-buffer-identification
+                  "   "
+                  mode-line-position
+                  (:eval
+                   (when vc-mode
+                     (truncate-string-to-width vc-mode 25 nil nil "...")))
+                  (:eval (purpose--modeline-string))
+                  mode-line-misc-info mode-line-end-spaces
+                  ))
   )
 
 
