@@ -196,7 +196,9 @@ Bost's solution' section)."
     :init
     (setq persp-state-default-file
 	  (expand-file-name "persp-state.el" user-emacs-directory)
-	  persp-mode-prefix-key (kbd "C-x l"))
+	  persp-mode-prefix-key (kbd "C-x l")
+          persp-modestring-short 't
+          )
     (persp-mode)
     (when (file-exists-p persp-state-default-file)
       (persp-state-load persp-state-default-file))
