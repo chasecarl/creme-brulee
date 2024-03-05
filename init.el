@@ -118,7 +118,9 @@
   "Configures line numbers in windows."
   (column-number-mode)
   (global-display-line-numbers-mode t)
-  (setq display-line-numbers-type 'relative)
+  (setq display-line-numbers-type 'relative
+        display-line-numbers-width-start t
+        )
 
   (defun cb--hook-from-mode (mode)
     ;; For some reason, `intern-soft' returns nil when the symbol is actually there...
