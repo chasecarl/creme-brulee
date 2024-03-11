@@ -29,10 +29,6 @@
   )
 
 
-;; if my calculations are right, this is the screen width for Acer Predator 21X
-(setq max-laptop-screen-mm-width 492)
-
-
 (defun cb--setup-custom ()
   "Configures custom."
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -249,20 +245,11 @@ Bost's solution' section)."
   )
 
 
-(defun cb-running-on-small-screen-p ()
-  "Returns t iff running on a small screen, nil otherwise."
-  (< (display-mm-width) max-laptop-screen-mm-width)
-  )
-
-
 (defun cb-setup-font ()
   "Setups fonts."
   ;; TODO: consider configuring modus-themes-* fonts
-  (let* ((mono-font "CodeNewRoman Nerd Font Mono")
-         (mono-height (if (cb-running-on-small-screen-p)
-                          140
-                        110)))
-    (set-face-attribute 'default nil :font mono-font :height mono-height)
+  (let ((mono-font "CodeNewRoman Nerd Font Mono"))
+    (set-face-attribute 'default nil :font mono-font :height 110)
     (set-frame-font mono-font nil t))
   ;; (let ((variable-font "Lato"))
   (let ((variable-font "Cardo"))
