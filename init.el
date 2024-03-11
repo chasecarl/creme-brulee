@@ -378,7 +378,9 @@ modes, etc.
     (setq org-log-done 'time
 	  org-todo-keywords
 	  '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)"))
-	  org-agenda-span 'fortnight
+	  org-agenda-span 2
+          ;; start the agenda view from the current day, to always see the next day
+          org-agenda-start-day "."
 	  org-agenda-start-on-weekday 0
 	  org-edit-src-content-indentation 0
 	  org-element-use-cache nil  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
