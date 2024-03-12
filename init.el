@@ -370,7 +370,8 @@ modes, etc.
           org-agenda-start-day "."
 	  org-agenda-start-on-weekday 0
 	  org-edit-src-content-indentation 0
-	  org-element-use-cache nil  ; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
+          ;; orj-journal: solves https://github.com/bastibe/org-journal/issues/406
+	  org-element-use-cache nil
           org-log-redeadline 'time
           org-log-reschedule 'time
           cb-organizer-path (expand-file-name "organizer.org" org-directory)
