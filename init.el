@@ -566,6 +566,7 @@ Taken from info:org#Breaking Down Tasks
 		 (elixir :org "elixir-lang")
 		 (glsl :org "theHamsta")
 		 (go :org "camdencheek")
+                 (gomod :org "camdencheek" :repo "tree-sitter-go-mod")
 		 (heex :org "phoenixframework")
 		 ;; (janet :org "sogaiu" :repo "tree-sitter-janet-simple")
 		 (janet :org "GrayJack")
