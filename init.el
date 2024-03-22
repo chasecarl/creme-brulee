@@ -513,6 +513,7 @@ Taken from info:org#Breaking Down Tasks
     :hook (((python-mode
 	     python-ts-mode  ;; requires a python language server (e.g. pyright)
              tsx-ts-mode  ;; requires typescript-language-server
+             go-ts-mode ;; requires gopls
 	     )
 	    . eglot-ensure)
 	   (prog-mode . hs-minor-mode))
