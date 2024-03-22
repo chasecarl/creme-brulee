@@ -731,6 +731,15 @@ Taken from info:org#Breaking Down Tasks
   )
 
 
+(defun cb-setup-go ()
+  "Setups go."
+  (use-package emacs
+    :mode (("\\.go\\'" . go-ts-mode)
+           ("\\go.mod\\'" . go-mod-ts-mode)
+           )
+    )
+  )
+
 (defun cb-setup-web ()
   "Setups all web-related stuff."
   (use-package emacs
@@ -805,6 +814,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-lisp)
   (cb-setup-lsp)
   (cb-setup-python)
+  (cb-setup-go)
   (cb-setup-web)
   ;; (cb-setup-debug)
   (cb-setup-comint)
