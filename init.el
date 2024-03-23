@@ -475,12 +475,17 @@ Taken from info:org#Breaking Down Tasks
   )
 
 
+(defun cb-add-entry-to-path (entry)
+  "Adds ENTRY to the PATH envvar and to `exec-path'."
+  (let ((path-env-name "PATH"))
+    (setenv path-env-name (concat entry path-separator (getenv path-env-name)))
+    (add-to-list 'exec-path entry)))
+
+
 (defun cb-setup-path ()
-  "Adds $HOME/.local/bin to the PATH envvar and to `exec-path'."
-  (let ((local-bin-path (file-name-concat (getenv "HOME") ".local" "bin"))
-        (path-env-name "PATH"))
-    (setenv path-env-name (concat local-bin-path path-separator (getenv path-env-name)))
-    (add-to-list 'exec-path local-bin-path))
+  (dolist (entry (list (file-name-concat (getenv "HOME") ".local" "bin")
+                       ))
+    (cb-add-entry-to-path entry))
 )
 
 
