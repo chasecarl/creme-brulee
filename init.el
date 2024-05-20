@@ -647,10 +647,11 @@ Taken from info:org#Breaking Down Tasks
 
 
 (defun cb-read-lines (file-path)
-  "Return a list of lines of a file at FILE-PATH."
-  (with-temp-buffer
-    (info-insert-file-contents file-path)
-    (split-string (buffer-string) "\n" t)))
+  "Returns a list of lines of a file at FILE-PATH if it exists, nil otherwise."
+  (when (file-exists-p file-path)
+    (with-temp-buffer
+      (info-insert-file-contents file-path)
+      (split-string (buffer-string) "\n" t))))
 
 
 (defun cb-project-root-or-nil (project)
