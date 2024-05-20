@@ -653,6 +653,13 @@ Taken from info:org#Breaking Down Tasks
     (split-string (buffer-string) "\n" t)))
 
 
+(defun cb-project-root-or-nil (project)
+  "Like project-root, but don't fail if PROJECT is nil."
+  (when project
+    (project-root project))
+  )
+
+
 (defun cb-expand-project-dotenv ()
   "Sets environment variables of the current project."
   (interactive)
