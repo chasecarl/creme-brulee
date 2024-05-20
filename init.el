@@ -484,6 +484,7 @@ Taken from info:org#Breaking Down Tasks
 
 (defun cb-setup-path ()
   (dolist (entry (list (file-name-concat (getenv "HOME") ".local" "bin")
+                       (file-name-concat (getenv "HOME") ".dotnet" "tools")  ;; for csharp-ls
                        ))
     (cb-add-entry-to-path entry))
 )
@@ -564,6 +565,7 @@ Taken from info:org#Breaking Down Tasks
       (dolist (grammar
 	       '((clojure :org "dannyfreeman")
 		 (cmake :org "uyha")
+                 (c-sharp)
 		 (css)
 		 (dart :org "ast-grep")
 		 (dockerfile :org "camdencheek")
@@ -607,7 +609,9 @@ Taken from info:org#Breaking Down Tasks
 		       (css-mode . css-ts-mode)
 		       (js-mode . js-ts-mode)
 		       (python-mode . python-ts-mode)
-		       (typescript-mode . tsx-ts-mode)))
+		       (typescript-mode . tsx-ts-mode)
+                       (csharp-mode . csharp-ts-mode)
+                       ))
       (add-to-list 'major-mode-remap-alist mapping))
 
     :config
@@ -761,6 +765,9 @@ Taken from info:org#Breaking Down Tasks
     :hook
     ((css-mode html-mode tsx-ts-mode) . (lambda () (setq fill-column 80)))
     )
+
+  (use-package web-mode
+    :mode (("\\.razor\\'" . web-mode)))
   )
 
 
