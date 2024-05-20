@@ -806,6 +806,9 @@ Taken from info:org#Breaking Down Tasks
     ((css-mode html-mode tsx-ts-mode) . (lambda () (setq fill-column 80)))
     )
 
+  (use-package k8s-mode
+    )
+
   (use-package web-mode
     :mode (("\\.razor\\'" . web-mode)))
   )
