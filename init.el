@@ -741,11 +741,6 @@ Taken from info:org#Breaking Down Tasks
   (use-package pyvenv
     :config
     (setq pyvenv-mode-line-indicator nil)
-    (advice-add #'eglot-ensure :around #'(lambda (orig-fun &rest args)
-					   (let ((venv-path (cb-project-poetry-venv-path)))
-					     (when venv-path
-					       (pyvenv-activate venv-path)))
-					   (apply orig-fun args)))
     (pyvenv-mode t))
 
   (let ((command-history-dirname "pyhist/"))
