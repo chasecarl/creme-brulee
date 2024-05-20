@@ -888,6 +888,8 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
     ;; will run only after you open an epub file, so we have to use `:init'
     :init
     (add-to-list 'cb-no-line-number-modes 'nov-mode)
+    :config
+    (setq nov-text-width 150)
     :mode ("\\.epub\\'" . nov-mode)))
 
 
