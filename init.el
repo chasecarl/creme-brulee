@@ -890,7 +890,15 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
     (add-to-list 'cb-no-line-number-modes 'nov-mode)
     :config
     (setq nov-text-width 150)
-    :mode ("\\.epub\\'" . nov-mode)))
+    :mode ("\\.epub\\'" . nov-mode))
+
+  (use-package olivetti
+    :init
+    (setq olivetti-body-width 150)
+    :hook
+    (nov-mode . olivetti-mode)
+    )
+  )
 
 
 (defun cb-load-packages ()
