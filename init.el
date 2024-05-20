@@ -737,6 +737,10 @@ Taken from info:org#Breaking Down Tasks
     :mode (("\\.go\\'" . go-ts-mode)
            ("\\go.mod\\'" . go-mod-ts-mode)
            )
+    :config
+    (setq go-ts-mode-indent-offset 4)
+    :hook
+    (go-ts-mode . (lambda () (setq tab-width 4)))
     )
   )
 
