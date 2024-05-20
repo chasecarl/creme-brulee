@@ -664,10 +664,12 @@ Taken from info:org#Breaking Down Tasks
 (defun cb-expand-project-dotenv ()
   "Sets environment variables of the current project."
   (interactive)
-  (let* ((dotenv-path (expand-file-name ".env" (project-root (project-current))))
+  (let* ((dotenv-path (expand-file-name ".env"
+                                        (cb-project-root-or-nil (project-current))))
 	 (dotenv (cb-read-lines dotenv-path)))
     (dolist (line dotenv)
-      (apply 'setenv (split-string line "=" t)))))
+      (apply 'setenv (split-string line "=" t)))
+    ))
 
 
 (defun cb-project-poetry-venv-path ()
