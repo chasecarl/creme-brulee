@@ -447,6 +447,19 @@ modes, etc.
     :bind (:map org-mode-map (("C-c i y" . org-download-yank)
 			      ("C-c i r" . org-display-inline-images))))
 
+  (use-package org-roam
+    :init
+    (setq org-roam-directory (cb-ensure-dir-exists
+                              (expand-file-name "roam" org-directory)))
+    :bind (
+           ("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert)
+           )
+    :config
+    (org-roam-setup)
+    )
+
   (use-package emacs
     :preface
     (defun org-summary-todo (n-done n-not-done)
