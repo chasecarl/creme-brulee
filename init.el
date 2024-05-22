@@ -41,6 +41,12 @@
   (find-file (expand-file-name "init.el" user-emacs-directory)))
 
 
+(defun cb-ensure-dir-exists (dirpath)
+  "Returns DIRPATH while ensuring the corresponding directory exists."
+  (make-directory dirpath :parents)
+  dirpath)
+
+
 (defun cb--setup-use-package ()
   "Configures use-package."
   (straight-use-package 'use-package))
