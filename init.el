@@ -460,6 +460,13 @@ modes, etc.
     (org-roam-setup)
     )
 
+  (use-package ebib
+    :config
+    (add-to-list 'ebib-preload-bib-files
+                 (expand-file-name "sources.bib" org-roam-directory))
+    (setq ebib-bibtex-dialect 'biblatex)
+    )
+
   (use-package emacs
     :preface
     (defun org-summary-todo (n-done n-not-done)
