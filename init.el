@@ -26,6 +26,8 @@
     "The warning type that appears in warnings from this file.")
   (defvar cb-agenda-category-width 18
     "The width of the category column in the agenda view.")
+  (defvar cb-bibliography-name "sources.bib"
+    "The name of the bibliography file.")
   )
 
 
@@ -463,7 +465,7 @@ modes, etc.
   (use-package ebib
     :config
     (add-to-list 'ebib-preload-bib-files
-                 (expand-file-name "sources.bib" org-roam-directory))
+                 (expand-file-name cb-bibliography-name org-roam-directory))
     (setq ebib-bibtex-dialect 'biblatex)
     )
 
