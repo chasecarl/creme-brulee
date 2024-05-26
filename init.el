@@ -469,6 +469,13 @@ modes, etc.
     (setq ebib-bibtex-dialect 'biblatex)
     )
 
+  (use-package org-ref
+    :config
+    (add-to-list 'bibtex-completion-bibliography
+                 (expand-file-name cb-bibliography-name org-roam-directory))
+    (setq bibtex-dialect 'biblatex)
+    )
+
   (use-package emacs
     :preface
     (defun org-summary-todo (n-done n-not-done)
