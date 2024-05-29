@@ -453,7 +453,15 @@ modes, etc.
   (use-package org-roam
     :init
     (setq org-roam-directory (cb-ensure-dir-exists
-                              (expand-file-name "roam" org-directory)))
+                              (expand-file-name "roam" org-directory))
+          ;; added empty line compared to the default
+          org-roam-capture-templates
+          '(("d" "default" plain "%?" :target
+             (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+             :unnarrowed t
+             :empty-lines-before 1)
+            )
+          )
     :bind (
            ("C-c n l" . org-roam-buffer-toggle)
            ("C-c n i" . org-roam-node-insert)
@@ -510,13 +518,27 @@ getter instead of the type)."
                                     note-type)))
         (lambda (item) t)))
 
+    (defun cb-generate-org-roam-typed-template (note-type)
+      (when (seq-contains-p cb-org-roam-note-types note-type)
+        `(("not used as we provide a single template" "''" plain "%?" :target
+           (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                      ,(format ":PROPERTIES:
+:%s: %s
+:END:
+#+title: ${title}\n" cb-org-roam-note-type-property-name note-type))
+           :unnarrowed t
+           :empty-lines-before 1))))
+
     (defun cb-build-note-type-transient-suffix (note-type)
       (lambda ()
         (interactive)
         (org-roam-node-find
          nil
          ""
-         (cb-org-roam-note-type-p note-type 'org-roam-node))))
+         (cb-org-roam-note-type-p note-type 'org-roam-node)
+         nil
+         :templates
+         (cb-generate-org-roam-typed-template note-type))))
 
     :bind (
            ("C-c n f" . cb-org-roam-typed-node-find)
