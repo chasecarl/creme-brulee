@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 (eval-and-compile
   ;; master seems to throw native-comp related errors on Emacs 29
   (setq straight-repository-branch "develop")
@@ -455,11 +456,71 @@ modes, etc.
                               (expand-file-name "roam" org-directory)))
     :bind (
            ("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
            ("C-c n i" . org-roam-node-insert)
            )
     :config
     (org-roam-setup)
+    )
+
+  (use-package emacs
+    :init
+    (setq cb-org-roam-note-types '(
+                                   Fleeting
+                                   Literature
+                                   Permanent
+                                   )
+	  cb-org-roam-note-type-key-mapping '((Fleeting . "t")
+					      (Literature . "l")
+					      (Permanent . "p")
+					      (All . "f"))
+          cb-org-roam-note-type-property-name "ROAM_NOTE_TYPE"
+          )
+    ;; the `eval' is used to generate the suffixes dynamically from a list
+    (eval `(transient-define-prefix cb-org-roam-typed-node-find ()
+             ["Note types\n"
+              [
+               ,@(mapcar #'(lambda (it) ; for some reason pcase-lambda doesn't work
+                             (pcase-let ((`(,note-type . ,key) it))
+                               `(,key
+                                 ,note-type
+                                 ,(cb-build-note-type-transient-suffix note-type))))
+                         cb-org-roam-note-type-key-mapping)
+               ]]))
+
+    :preface
+    (defun cb-org-roam-note-type-p (note-type node-repr-type)
+      "Creates a filter function by note type suitable for `org-roam-node-find'.
+
+If NOTE-TYPE is one of `cb-org-roam-note-types', the resulting function filters by it,
+otherwise it always returns t.
+
+The primary use of the function is to create a filter function for functions like
+`org-roam-node-find', and this is achieved with NODE-REPR-TYPE set to `org-roam-node'.
+Otherwise, it can also be used to filter data not necessarily of type `org-roam-node',
+e.g. query results from `org-roam-db-query', but then it's assumed that node properties
+can be retrieved with (nth 6 node). This argument is subject to change (e.g. pass the
+getter instead of the type)."
+      (if (seq-contains-p cb-org-roam-note-types note-type)
+          (cl-flet ((cb-properties-getter (if (eq node-repr-type 'org-roam-node)
+                                              #'org-roam-node-properties
+                                            #'(lambda (item) (nth 6 item)))))
+            (lambda (item) (string= (cdr (assoc-string
+                                          cb-org-roam-note-type-property-name
+                                          (cb-properties-getter item)))
+                                    note-type)))
+        (lambda (item) t)))
+
+    (defun cb-build-note-type-transient-suffix (note-type)
+      (lambda ()
+        (interactive)
+        (org-roam-node-find
+         nil
+         ""
+         (cb-org-roam-note-type-p note-type 'org-roam-node))))
+
+    :bind (
+           ("C-c n f" . cb-org-roam-typed-node-find)
+           )
     )
 
   (use-package org-roam-ui
