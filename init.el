@@ -499,8 +499,8 @@ modes, etc.
     (defun cb-org-roam-note-type-p (note-type node-repr-type)
       "Creates a filter function by note type suitable for `org-roam-node-find'.
 
-If NOTE-TYPE is one of `cb-org-roam-note-types', the resulting function filters by it,
-otherwise it always returns t.
+If NOTE-TYPE is one of `cb-org-roam-note-types', returns a function that filters by the
+type, otherwise returns nil.
 
 The primary use of the function is to create a filter function for functions like
 `org-roam-node-find', and this is achieved with NODE-REPR-TYPE set to `org-roam-node'.
@@ -508,15 +508,14 @@ Otherwise, it can also be used to filter data not necessarily of type `org-roam-
 e.g. query results from `org-roam-db-query', but then it's assumed that node properties
 can be retrieved with (nth 6 node). This argument is subject to change (e.g. pass the
 getter instead of the type)."
-      (if (seq-contains-p cb-org-roam-note-types note-type)
+      (when (seq-contains-p cb-org-roam-note-types note-type)
           (cl-flet ((cb-properties-getter (if (eq node-repr-type 'org-roam-node)
                                               #'org-roam-node-properties
                                             #'(lambda (item) (nth 6 item)))))
             (lambda (item) (string= (cdr (assoc-string
                                           cb-org-roam-note-type-property-name
                                           (cb-properties-getter item)))
-                                    note-type)))
-        (lambda (item) t)))
+                                    note-type)))))
 
     (defun cb-generate-org-roam-typed-template (note-type)
       (when (seq-contains-p cb-org-roam-note-types note-type)
