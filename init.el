@@ -554,6 +554,76 @@ getter instead of the type)."
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 
+  (use-package emacs
+    :preface
+    (defun citation-mentioned-by-any-of-ids-p (node-ids cite)
+      (seq-contains-p node-ids (car cite)))
+
+    (defun cb-org-roam-ui--init-filter-advices ()
+      "Define advices to filter nodes in org-roam-ui by a note type.
+
+This is done instead of advicing immediately to be able to also remove the advices (and
+only the ones that are defined here) on demand.
+
+The flow of interest for filtering appears to be in `org-roam-ui--send-graphdata', as
+the whole graph is sent on each update. It would be nice if the payload creation and
+sending were separated (because then we could just advice a single function), but that's
+not the case, so we have to advice the functions in between.
+
+For each note type we associate an alist of functions-to-be-adviced and their advices. We
+may need to advice more functions than we do now for proper behavior, e.g.
+`org-roam-ui--get-links'."
+      (setq cb-org-roam-ui--filter-advices
+            (seq-map (lambda (note-type)
+                       `(,note-type
+                         .
+                         (
+                          (org-roam-ui--get-nodes
+                           . ,(lambda (res)
+                                (seq-filter (cb-org-roam-note-type-p note-type nil)
+                                            res)))
+                          ;; the order of the advices matter
+                          (org-roam-ui--filter-citations
+                           . ,(lambda (res)
+                                (let ((node-ids (seq-map (lambda (node)
+                                                           (car node))
+                                                         (org-roam-ui--get-nodes))))
+                                  (seq-filter (lambda (cite)
+                                                (citation-mentioned-by-any-of-ids-p
+                                                 node-ids
+                                                 cite))
+                                              res)))))))
+                     cb-org-roam-note-types)))
+
+    (defun cb-org-roam-ui-filter (note-type)
+      (pcase-dolist (`(,function . ,advice)
+                     (cdr (assoc note-type cb-org-roam-ui--filter-advices)))
+        (advice-add function :filter-return advice)))
+
+    (defun cb-org-roam-ui-unfilter ()
+      (interactive)
+      (dolist (note-type cb-org-roam-note-types)
+        (pcase-dolist (`(,function . ,advice)
+                       (cdr (assoc note-type cb-org-roam-ui--filter-advices)))
+          (advice-remove function advice))))
+
+    :init
+    (cb-org-roam-ui--init-filter-advices)
+    (eval `(transient-define-prefix cb-org-roam-ui-filter-transient ()
+             ["Filter actions\n"
+              [
+               ,@(mapcar (lambda (it)
+                           (pcase-let ((`(,note-type . ,key) it))
+                             `(,key
+                               ,note-type
+                               ,(lambda ()
+                                  (interactive)
+                                  (cb-org-roam-ui-filter note-type)))))
+                         cb-org-roam-note-type-key-mapping)
+               ("u" "Remove all filters" cb-org-roam-ui-unfilter)
+               ]]))
+    :bind (("C-c n f" . #'cb-org-roam-ui-filter-transient)))
+
   (use-package ebib
     :config
     (add-to-list 'ebib-preload-bib-files
