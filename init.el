@@ -479,8 +479,7 @@ modes, etc.
                                    )
 	  cb-org-roam-note-type-key-mapping '((Fleeting . "t")
 					      (Literature . "l")
-					      (Permanent . "p")
-					      (All . "f"))
+					      (Permanent . "p"))
           cb-org-roam-note-type-property-name "ROAM_NOTE_TYPE"
           )
     ;; the `eval' is used to generate the suffixes dynamically from a list
@@ -493,6 +492,7 @@ modes, etc.
                                  ,note-type
                                  ,(cb-build-note-type-transient-suffix note-type))))
                          cb-org-roam-note-type-key-mapping)
+               ("f" All ,(cb-build-note-type-transient-suffix 'All))
                ]]))
 
     :preface
