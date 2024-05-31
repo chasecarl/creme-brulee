@@ -492,7 +492,7 @@ modes, etc.
                                  ,note-type
                                  ,(cb-build-note-type-transient-suffix note-type))))
                          cb-org-roam-note-type-key-mapping)
-               ("f" All ,(cb-build-note-type-transient-suffix 'All))
+               ("s" All ,(cb-build-note-type-transient-suffix 'All))
                ]]))
 
     :preface
@@ -540,7 +540,7 @@ getter instead of the type)."
          (cb-generate-org-roam-typed-template note-type))))
 
     :bind (
-           ("C-c n f" . cb-org-roam-typed-node-find)
+           ("C-c n s" . cb-org-roam-typed-node-find)
            )
     )
 
