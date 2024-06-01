@@ -461,11 +461,28 @@ modes, etc.
              :unnarrowed t
              :empty-lines-before 1)
             )
+          org-roam-dailies-directory "journal/"
+          org-roam-dailies-capture-templates
+          '(("d" "default" entry "* %(format-time-string \"%R\" (current-time))\n%?"
+             :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n")
+             ;; I want to see the context when capturing
+             :unnarrowed t
+             :empty-lines-before 1))
           )
+    (let ((dailies-full-path (expand-file-name
+                              org-roam-dailies-directory
+                              org-roam-directory)))
+      (cb-ensure-dir-exists dailies-full-path)
+      (add-to-list 'org-agenda-files dailies-full-path))
     :bind (
-           ("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n i" . org-roam-node-insert)
+           ("C-c n l" . #'org-roam-buffer-toggle)
+           ("C-c n i" . #'org-roam-node-insert)
+           :map org-roam-dailies-map
+           ("j" . #'org-roam-dailies-goto-today)
+           ("c" . #'org-roam-dailies-capture-today)
            )
+    :bind-keymap
+    ("C-c n j" . org-roam-dailies-map)
     :config
     (org-roam-db-autosync-enable)
     )
