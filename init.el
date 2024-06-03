@@ -478,6 +478,8 @@ modes, etc.
            ("C-c n l" . #'org-roam-buffer-toggle)
            ("C-c n i" . #'org-roam-node-insert)
            :map org-roam-dailies-map
+           ("d" . nil)
+           ("n" . nil)
            ("j" . #'org-roam-dailies-goto-today)
            ("c" . #'org-roam-dailies-capture-today)
            )
