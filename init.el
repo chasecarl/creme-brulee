@@ -673,6 +673,78 @@ Taken from info:org#Breaking Down Tasks
   (use-package org-transclusion
     :after org)
 
+  (use-package emacs
+    ;; Typed notes and transclusion integrations
+    :preface
+    (defun cb-org-set-note-type (note-type)
+      (let* ((id (save-excursion
+                   ;; copy-pasted from `org-roam-extract-subtree'
+                   (org-back-to-heading-or-point-min t)
+                   (when (bobp) (user-error "Already a top-level node"))
+                   (org-id-get-create)))
+             (note-type (if (stringp note-type)
+                            (intern note-type)
+                          note-type)))
+        (when (seq-contains-p cb-org-roam-note-types note-type)
+          (org-set-property cb-org-roam-note-type-property-name
+                            (symbol-name note-type))
+          id)))
+
+    (defun cb-org-roam-get-node-title-by-id (org-id)
+      (let* ((id org-id)
+             (nodes (seq-filter (lambda (node) (string= (org-roam-node-id node) id))
+                                (org-roam-node-list))))
+        (when nodes (org-roam-node-title (car nodes)))))
+
+    (defun cb-org-transclusion-insert-from-id (org-id)
+      (let ((title (cb-org-roam-get-node-title-by-id org-id)))
+        (unless title
+          (error "Node wasn't found: %s" org-id))
+        (insert "#+transclude: ")
+        (org-insert-link nil (format "id:%s" org-id) title)
+        (org-transclusion-add)))
+
+    (defun cb--read-file-name-non-interactive (prompt
+                                               &optional
+                                               dir
+                                               default-filename
+                                               mustmatch
+                                               initial
+                                               predicate)
+      default-filename)
+
+    (defmacro cb-with-override (orig-fn temp-fn &rest body)
+      (declare (indent 2))
+      `(progn
+         (advice-add ,orig-fn :override ,temp-fn)
+         ;; TODO: handle errors in body (advice-remove isn't called right now in this
+         ;; case)
+         (let ((res (progn ,@body)))
+           (advice-remove ,orig-fn ,temp-fn)
+           res)))
+
+    (defun cb-org-roam-factor-out-typed-note (note-type)
+      "Creates a separate typed note of a heading, and transcludes it in-place."
+      (let ((id (cb-org-set-note-type note-type)))
+        (cb-with-override 'read-file-name 'cb--read-file-name-non-interactive
+          (org-roam-extract-subtree))
+        (open-line 1)
+        (cb-org-transclusion-insert-from-id id)))
+
+    :init
+    (eval `(transient-define-prefix cb-org-roam-factor-out-typed-note-transient ()
+             ["Note types\n"
+              [
+               ,@(mapcar #'(lambda (it)
+                             (pcase-let ((`(,note-type . ,key) it))
+                               `(,key
+                                 ,note-type
+                                 ,(lambda ()
+                                    (interactive)
+                                    (cb-org-roam-factor-out-typed-note note-type)))))
+                         cb-org-roam-note-type-key-mapping)
+               ]])))
+
   (defun org-schedule-effort ()
     "Taken from https://commonplace.doubleloop.net/calculating-effort-estimates-and-scheduled-times-in-org-mode"
     (interactive)
