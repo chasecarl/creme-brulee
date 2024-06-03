@@ -670,6 +670,9 @@ Taken from info:org#Breaking Down Tasks
     (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
     )
 
+  (use-package org-transclusion
+    :after org)
+
   (defun org-schedule-effort ()
     "Taken from https://commonplace.doubleloop.net/calculating-effort-estimates-and-scheduled-times-in-org-mode"
     (interactive)
