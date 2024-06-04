@@ -29,7 +29,10 @@
     "The width of the category column in the agenda view.")
   (defvar cb-bibliography-name "sources.bib"
     "The name of the bibliography file.")
-  )
+  (defvar cb-org-roam-note-type-key-mapping '(("t" . Fleeting)
+					      ("l" . Literature)
+					      ("p" . Permanent))
+    "The mapping of note types to keys for note type menus."))
 
 
 (defun cb--setup-custom ()
@@ -504,23 +507,9 @@ modes, etc.
                                    Literature
                                    Permanent
                                    )
-	  cb-org-roam-note-type-key-mapping '((Fleeting . "t")
-					      (Literature . "l")
-					      (Permanent . "p"))
           cb-org-roam-note-type-property-name "ROAM_NOTE_TYPE"
           )
-    ;; the `eval' is used to generate the suffixes dynamically from a list
-    (eval `(transient-define-prefix cb-org-roam-typed-node-find ()
-             ["Note types\n"
-              [
-               ,@(mapcar #'(lambda (it) ; for some reason pcase-lambda doesn't work
-                             (pcase-let ((`(,note-type . ,key) it))
-                               `(,key
-                                 ,note-type
-                                 ,(cb-build-note-type-transient-suffix note-type))))
-                         cb-org-roam-note-type-key-mapping)
-               ("s" All ,(cb-build-note-type-transient-suffix 'All))
-               ]]))
+    (cb-make-note-type-menu cb-org-roam-typed-node-find '(("s" . All)))
 
     :preface
     (defun cb-org-roam-note-type-p (note-type node-repr-type)
@@ -555,16 +544,14 @@ getter instead of the type)."
            :unnarrowed t
            :empty-lines-before 1))))
 
-    (defun cb-build-note-type-transient-suffix (note-type)
-      (lambda ()
-        (interactive)
-        (org-roam-node-find
-         nil
-         ""
-         (cb-org-roam-note-type-p note-type 'org-roam-node)
-         nil
-         :templates
-         (cb-generate-org-roam-typed-template note-type))))
+    (defun cb-org-roam-typed-node-find (note-type)
+      (org-roam-node-find
+       nil
+       ""
+       (cb-org-roam-note-type-p note-type 'org-roam-node)
+       nil
+       :templates
+       (cb-generate-org-roam-typed-template note-type)))
 
     (defmacro cb-make-note-type-menu (fn
                                       &optional
@@ -601,7 +588,7 @@ with the \"-menu\" suffix.
            ]]))
 
     :bind (
-           ("C-c n s" . cb-org-roam-typed-node-find)
+           ("C-c n s" . cb-org-roam-typed-node-find-menu)
            )
     )
 
@@ -656,7 +643,7 @@ may need to advice more functions than we do now for proper behavior, e.g.
                                               res)))))))
                      cb-org-roam-note-types)))
 
-    (defun cb-org-roam-ui-filter (note-type)
+    (defun cb--org-roam-ui-filter (note-type)
       (pcase-dolist (`(,function . ,advice)
                      (cdr (assoc note-type cb-org-roam-ui--filter-advices)))
         (advice-add function :filter-return advice)))
@@ -668,22 +655,20 @@ may need to advice more functions than we do now for proper behavior, e.g.
                        (cdr (assoc note-type cb-org-roam-ui--filter-advices)))
           (advice-remove function advice))))
 
+    (defun cb-org-roam-ui-filter (note-type)
+      (if (eq note-type 'Unfilter)
+          (cb-org-roam-ui-unfilter)
+        (cb--org-roam-ui-filter note-type)))
+
     :init
     (cb-org-roam-ui--init-filter-advices)
-    (eval `(transient-define-prefix cb-org-roam-ui-filter-transient ()
-             ["Filter actions\n"
-              [
-               ,@(mapcar (lambda (it)
-                           (pcase-let ((`(,note-type . ,key) it))
-                             `(,key
-                               ,note-type
-                               ,(lambda ()
-                                  (interactive)
-                                  (cb-org-roam-ui-filter note-type)))))
-                         cb-org-roam-note-type-key-mapping)
-               ("u" "Remove all filters" cb-org-roam-ui-unfilter)
-               ]]))
-    :bind (("C-c n f" . #'cb-org-roam-ui-filter-transient)))
+    (cb-make-note-type-menu
+        cb-org-roam-ui-filter
+        '(("u" . Unfilter))
+        "Filter actions\n"
+        '(("u" . "Remove all filters")))
+
+    :bind (("C-c n f" . #'cb-org-roam-ui-filter-menu)))
 
   (use-package ebib
     :config
@@ -774,18 +759,7 @@ Taken from info:org#Breaking Down Tasks
         (cb-org-transclusion-insert-from-id id)))
 
     :init
-    (eval `(transient-define-prefix cb-org-roam-factor-out-typed-note-transient ()
-             ["Note types\n"
-              [
-               ,@(mapcar #'(lambda (it)
-                             (pcase-let ((`(,note-type . ,key) it))
-                               `(,key
-                                 ,note-type
-                                 ,(lambda ()
-                                    (interactive)
-                                    (cb-org-roam-factor-out-typed-note note-type)))))
-                         cb-org-roam-note-type-key-mapping)
-               ]])))
+    (cb-make-note-type-menu cb-org-roam-factor-out-typed-note))
 
   (defun org-schedule-effort ()
     "Taken from https://commonplace.doubleloop.net/calculating-effort-estimates-and-scheduled-times-in-org-mode"
