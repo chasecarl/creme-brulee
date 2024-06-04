@@ -35,6 +35,32 @@
     "The mapping of note types to keys for note type menus."))
 
 
+(defalias 'find-macro-usage
+  (kmacro (format "C-s <return> ( %s <return> C-M-b C-b"
+                  (string-join (mapcar #'byte-to-string "cb-make-note-type-menu") " "))))
+
+
+(defalias 'eval-undo
+  (kmacro "C-x C-e C-/"))
+
+
+(defun find-expand-properly-eval-unexpand ()
+  (interactive)
+  (find-macro-usage)
+  (emacs-lisp-macroexpand)
+  (eval-undo))
+
+
+(defun cb-init-macro-expansion-workaround ()
+  "Work around 224ce846c0827618e85fd253a4c996895dfd6439.
+
+Should be run inside the init file.
+"
+  (interactive)
+  (while t
+    (find-expand-properly-eval-unexpand)))
+
+
 (defun cb--setup-custom ()
   "Configures custom."
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
