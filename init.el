@@ -55,6 +55,14 @@
   (straight-use-package 'use-package))
 
 
+(defun cb-alist-unique (alist)
+  "Create a new alist with the associations that have no duplicate cars."
+  (let ((keys (cl-remove-duplicates (mapcar #'car alist))))
+    (mapcar (lambda (key)
+              (assoc key alist))
+            keys)))
+
+
 (defun cb-setup-theme ()
   "Setups the color theme."
   (use-package emacs
@@ -557,6 +565,40 @@ getter instead of the type)."
          nil
          :templates
          (cb-generate-org-roam-typed-template note-type))))
+
+    (defmacro cb-make-note-type-menu (fn
+                                      &optional
+                                      custom-mapping
+                                      desc
+                                      note-type-desc-mapping
+                                      name)
+      "Create an interactive interface for a single-argument function FN.
+
+The argument of FN is assumed to be a note type. The interface is created by assigning
+a key binding to each note type, as per `cb-org-roam-note-type-key-mapping'. You can
+provide an additional mapping in the same format via CUSTOM-MAPPING. If it has common
+keys with `cb-org-roam-note-type-key-mapping', the custom ones take precedence.
+
+DESC is a string that is used in the interface to describe the action and/or the note
+type choices. Default: \"Note types\n\".
+
+NAME is the name of the resulting interactive command. Default: the name of FN
+with the \"-menu\" suffix.
+"
+      `(transient-define-prefix ,(or name
+                                     (make-symbol (format "%s-menu" (symbol-name fn))))
+         ()
+         [,(or desc "Note types\n")
+          [
+           ,@(mapcar (pcase-lambda (`(,key . ,note-type))
+                       `(,key
+                         ,(or (assoc note-type note-type-desc-mapping) note-type)
+                         (lambda ()
+                           (interactive)
+                           (,fn ',note-type))))
+                     (cb-alist-unique (append (eval custom-mapping)
+                                              cb-org-roam-note-type-key-mapping)))
+           ]]))
 
     :bind (
            ("C-c n s" . cb-org-roam-typed-node-find)
