@@ -35,30 +35,46 @@
     "The mapping of note types to keys for note type menus."))
 
 
-(defalias 'find-macro-usage
-  (kmacro (format "C-s <return> ( %s <return> C-M-b C-b"
-                  (string-join (mapcar #'byte-to-string "cb-make-note-type-menu") " "))))
+(defun find-macro-usage ()
+  (let ((result (search-forward
+                 ;; so that it won't find itself
+                 (format "%s%s" "(cb-make-" "note-type-menu")
+                 nil t)))
+    (back-to-indentation)
+    result))
 
 
-(defalias 'eval-undo
-  (kmacro "C-x C-e C-/"))
+(defun expand-eval-unexpand ()
+  "Expand the macro at point, evaluate it expanded, unexpand it.
+
+This is achieved by killing and yanking, so the buffer will be considered modified.
+"
+  (kill-sexp)
+  (yank)
+  (backward-sexp)
+  (set-mark (point))
+  (emacs-lisp-macroexpand)
+  (call-interactively 'eval-last-sexp)
+  (kill-region (mark) (point))
+  (yank 2))
 
 
 (defun find-expand-properly-eval-unexpand ()
   (interactive)
-  (find-macro-usage)
-  (emacs-lisp-macroexpand)
-  (eval-undo))
+  (when (find-macro-usage)
+    (expand-eval-unexpand)
+    t))
 
 
 (defun cb-init-macro-expansion-workaround ()
-  "Work around 224ce846c0827618e85fd253a4c996895dfd6439.
-
-Should be run inside the init file.
-"
+  "Work around 224ce846c0827618e85fd253a4c996895dfd6439."
   (interactive)
-  (while t
-    (find-expand-properly-eval-unexpand)))
+  (save-excursion
+    (cb-visit-init)
+    (beginning-of-buffer)
+    (while (find-expand-properly-eval-unexpand)
+      t)
+    (revert-buffer t t)))
 
 
 (defun cb--setup-custom ()
@@ -1259,3 +1275,4 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
 ;; are deferred based on file extension, but we're visiting these files at the
 ;; perspective load time
 (cb-workspace-management)
+(cb-init-macro-expansion-workaround)
