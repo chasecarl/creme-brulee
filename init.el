@@ -964,6 +964,7 @@ Taken from info:org#Breaking Down Tasks
 		 (javascript :sourcedir "src")
 		 (make :org "alemuller")
 		 (markdown :org "ikatyang")
+                 (nix :org "nix-community")
 		 (org :org "milisims")
 		 (perl :org "ganezdragon")
 		 (proto :org "mitchellh")
@@ -1142,6 +1143,13 @@ Taken from info:org#Breaking Down Tasks
     )
   )
 
+
+(defun cb-setup-nix ()
+  "Setup nix."
+  (use-package nix-ts-mode
+    :mode "\\.nix\\'"))
+
+
 (defun cb-setup-web ()
   "Setups all web-related stuff."
   (use-package emacs
@@ -1223,6 +1231,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   (cb-setup-lsp)
   (cb-setup-python)
   (cb-setup-go)
+  (cb-setup-nix)
   (cb-setup-web)
   ;; (cb-setup-debug)
   (cb-setup-comint)
