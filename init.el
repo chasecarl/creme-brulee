@@ -1217,6 +1217,16 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   )
 
 
+(defun cb-diff ()
+  "Setup diff."
+  (use-package emacs
+    :after ediff
+    :config
+    (setq ediff-window-setup-function #'ediff-setup-windows-plain
+          ;; it means 'vertically' on Emacs' language :)
+          ediff-split-window-function #'split-window-horizontally)))
+
+
 (defun cb-dev ()
   "Development stuff."
   (cb-setup-git)
@@ -1232,7 +1242,7 @@ Taken from https://www.reddit.com/r/emacs/comments/101uwgd/enable_paredit_mode_f
   ;; (cb-setup-debug)
   (cb-setup-comint)
   (cb-setup-search)
-  )
+  (cb-diff))
 
 
 (defun cb-reading ()
