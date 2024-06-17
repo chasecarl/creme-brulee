@@ -1009,7 +1009,9 @@ Unlike `org-get-heading', include the stars."
   ;; Not using `:mode' above because yaml config is not quite `treesit' config,
   ;; and using it defers `cb-setup-install-grammars'
   ;; TODO: consider using `use-package' `:demand' or `:init'
-  (add-to-list 'auto-mode-alist '("\\.ya?ml\\'" . yaml-ts-mode)))
+  (dolist (mode-assoc '(("\\.ya?ml\\'" . yaml-ts-mode)
+                        ("\\.?[Dd]ockerfile" . dockerfile-ts-mode)))
+    (add-to-list 'auto-mode-alist mode-assoc)))
 
 
 (defun cb-setup-shell-and-terminal ()
