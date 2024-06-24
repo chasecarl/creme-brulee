@@ -996,7 +996,8 @@ Unlike `org-get-heading', include the stars."
   (use-package combobulate
     :straight (combobulate :type git
                            :host github
-                           :repo "mickeynp/combobulate")
+                           :repo "mickeynp/combobulate"
+                           :nonrecursive t)
     :hook ((python-ts-mode
             js-ts-mode
             css-ts-mode
