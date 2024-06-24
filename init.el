@@ -995,16 +995,15 @@ Unlike `org-get-heading', include the stars."
 
   (use-package combobulate
     :straight (combobulate :type git
-			   :host github
-			   :repo "mickeynp/combobulate")
+                           :host github
+                           :repo "mickeynp/combobulate")
     :hook ((python-ts-mode
-	    js-ts-mode
-	    css-ts-mode
-	    yaml-ts-mode
-	    typescript-ts-mode
-	    tsx-ts-mode
-	    )
-	   . combobulate-mode))
+            js-ts-mode
+            css-ts-mode
+            yaml-ts-mode
+            typescript-ts-mode
+            tsx-ts-mode)
+           . combobulate-mode))
 
   ;; Not using `:mode' above because yaml config is not quite `treesit' config,
   ;; and using it defers `cb-setup-install-grammars'
