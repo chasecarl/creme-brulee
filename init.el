@@ -765,11 +765,17 @@ Taken from info:org#Breaking Down Tasks
                                 (org-roam-node-list))))
         (when nodes (org-roam-node-title (car nodes)))))
 
-    (defun cb-org-transclusion-insert-from-id (org-id &optional exclude-title)
+    (defun cb-org-transclusion-insert-from-id (org-id &optional level exclude-title)
+      (when level
+        (unless (numberp level)
+          (error "Invalid org level: %s" level)))
       (let ((title (cb-org-roam-get-node-title-by-id org-id)))
         (unless title
           (error "Node wasn't found: %s" org-id))
-        (insert (format "#+transclude:%s"
+        (insert (format "#+transclude:%s%s"
+                        (if level
+                            (format " :level %d" level)
+                          "")
                         (if exclude-title
                             " :exclude-elements \"keyword\""
                           "")))
@@ -797,11 +803,12 @@ Taken from info:org#Breaking Down Tasks
 
     (defun cb-org-roam-factor-out-typed-note (note-type)
       "Creates a separate typed note of a heading, and transcludes it in-place."
-      (let ((id (cb-org-set-note-type note-type)))
+      (let ((id (cb-org-set-note-type note-type))
+            (level (org-current-level)))
         (cb-with-override 'read-file-name 'cb--read-file-name-non-interactive
           (org-roam-extract-subtree))
         (open-line 1)
-        (cb-org-transclusion-insert-from-id id t)))
+        (cb-org-transclusion-insert-from-id id (1+ level) t)))
 
     :init
     (cb-make-note-type-menu cb-org-roam-factor-out-typed-note))
