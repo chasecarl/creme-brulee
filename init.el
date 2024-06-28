@@ -765,11 +765,14 @@ Taken from info:org#Breaking Down Tasks
                                 (org-roam-node-list))))
         (when nodes (org-roam-node-title (car nodes)))))
 
-    (defun cb-org-transclusion-insert-from-id (org-id)
+    (defun cb-org-transclusion-insert-from-id (org-id &optional exclude-title)
       (let ((title (cb-org-roam-get-node-title-by-id org-id)))
         (unless title
           (error "Node wasn't found: %s" org-id))
-        (insert "#+transclude: ")
+        (insert (format "#+transclude:%s"
+                        (if exclude-title
+                            " :exclude-elements \"keyword\""
+                          "")))
         (org-insert-link nil (format "id:%s" org-id) title)
         (org-transclusion-add)))
 
@@ -798,7 +801,7 @@ Taken from info:org#Breaking Down Tasks
         (cb-with-override 'read-file-name 'cb--read-file-name-non-interactive
           (org-roam-extract-subtree))
         (open-line 1)
-        (cb-org-transclusion-insert-from-id id)))
+        (cb-org-transclusion-insert-from-id id t)))
 
     :init
     (cb-make-note-type-menu cb-org-roam-factor-out-typed-note))
