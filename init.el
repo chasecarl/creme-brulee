@@ -765,14 +765,19 @@ Taken from info:org#Breaking Down Tasks
                                 (org-roam-node-list))))
         (when nodes (org-roam-node-title (car nodes)))))
 
-    (defun cb-org-transclusion-insert-from-id (org-id &optional level exclude-title)
+    (defun cb-org-transclusion-insert-from-id (org-id &optional level exclude-title heading)
       (when level
         (unless (numberp level)
           (error "Invalid org level: %s" level)))
-      (let ((title (cb-org-roam-get-node-title-by-id org-id)))
+      (let ((title (cb-org-roam-get-node-title-by-id org-id))
+            (level (if heading (1+ level) level)))
         (unless title
           (error "Node wasn't found: %s" org-id))
         (open-line 1)
+        (when heading
+          (insert heading)
+          (newline)
+          (open-line 1))
         (insert (format "#+transclude:%s%s"
                         (if level
                             (format " :level %d" level)
@@ -802,13 +807,24 @@ Taken from info:org#Breaking Down Tasks
            (advice-remove ,orig-fn ,temp-fn)
            res)))
 
+    (defun cb-get-heading ()
+      "Return the current heading.
+
+Unlike `org-get-heading', include the stars."
+      (save-excursion
+        (org-back-to-heading)
+        (let ((beg (point)))
+          (outline-end-of-heading)
+          (buffer-substring-no-properties beg (point)))))
+
     (defun cb-org-roam-factor-out-typed-note (note-type)
       "Creates a separate typed note of a heading, and transcludes it in-place."
       (let ((id (cb-org-set-note-type note-type))
-            (level (org-current-level)))
+            (level (org-current-level))
+            (heading (cb-get-heading)))
         (cb-with-override 'read-file-name 'cb--read-file-name-non-interactive
           (org-roam-extract-subtree))
-        (cb-org-transclusion-insert-from-id id (1+ level) t)))
+        (cb-org-transclusion-insert-from-id id level t heading)))
 
     :init
     (cb-make-note-type-menu cb-org-roam-factor-out-typed-note))
