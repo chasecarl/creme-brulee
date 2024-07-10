@@ -313,7 +313,7 @@ modes, etc.
     )
   (cb--setup-line-numbers)
   (setq-default indent-tabs-mode nil)
-  )
+  (setq ac-ignore-case nil))
 
 
 (defun cb-package-management ()
