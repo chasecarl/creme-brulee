@@ -863,7 +863,11 @@ Unlike `org-get-heading', include the stars."
             (format "%s" ts-minute-start))
           "+"
           effort)))))
-  )
+
+  ;; allow for emphasis to spread on more than one line (20 to be precise)
+  (progn
+    (setcar (nthcdr 4 org-emphasis-regexp-components) 20)
+    (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)))
 
 
 (defun cb-global-bindings ()
