@@ -232,10 +232,6 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
     (dolist (func funcs)
       (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
 
-  (use-package winum
-    :init (winum-set-keymap-prefix (kbd "C-c"))
-    :config (winum-mode))
-
   (use-package window-purpose
     :config
     ;; TODO: adjust the `repl' purpose definition (e.g. now it's too python-specific)
