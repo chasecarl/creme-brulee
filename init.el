@@ -197,44 +197,15 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   (delete-other-windows))
 
 
+(defun cb-remove-advice-from-functions (funcs)
+  (dolist (func funcs)
+    (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
+
+
 (defun cb-window-management ()
   "Manage windows."
-  (transient-define-prefix cb-manage-windows ()
-    "Manage window transient."
-    :transient-suffix 'transient--do-stay
-    :transient-non-suffix 'transient--do-quit-one
-    ["Switch window\n"
-     [("h" "Go to the window on the left" windmove-left)
-      ("j" "Go to the window below" windmove-down)
-      ("k" "Go to the window above" windmove-up)
-      ("l" "Go to the window on the right" windmove-right)
-      ("r" "Rotate windows" cb-rotate-windows)]])
-  ;; TODO: merge into one function (the if-version throws error when used
-  ;;       on `cb-manage-windows')
-  (defun cb--ensure-transient-hidden-popup (orig-fun &rest args)
-    (if (eq (oref transient--prefix command) 'cb-manage-windows)
-	(let ((old-show-popup transient-show-popup))
-	  (customize-set-variable 'transient-show-popup nil)
-	  (funcall orig-fun)  ; assuming it takes no args
-	  (customize-set-variable 'transient-show-popup old-show-popup))
-      (funcall orig-fun)))
-  (defun cb--ensure-transient-hidden-popup-2 (orig-fun &rest args)
-    (let ((old-show-popup transient-show-popup))
-      (customize-set-variable 'transient-show-popup nil)
-      (let ((res (apply orig-fun args)))
-	(customize-set-variable 'transient-show-popup old-show-popup)
-	res)))
-  (advice-add 'transient--redisplay :around #'cb--ensure-transient-hidden-popup)
-  (advice-add 'cb-manage-windows :around #'cb--ensure-transient-hidden-popup-2)
-  ;; (cb-remove-advice-from-functions '(transient--redisplay cb-manage-windows))
-
-  (defun cb-remove-advice-from-functions (funcs)
-    (dolist (func funcs)
-      (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
-
-  (use-package winum
-    :init (winum-set-keymap-prefix (kbd "C-c"))
-    :config (winum-mode))
+  (use-package ace-window
+    :bind ("C-x w" . ace-window))
 
   (use-package window-purpose
     :config
@@ -874,17 +845,6 @@ Unlike `org-get-heading', include the stars."
   "Binds commands that aren't part of a package."
   ;; TODO: implement Creme Brulee transient
   (global-set-key (kbd "C-c b i") 'cb-visit-init)
-  ;; this is what you lose with the below
-  ;; TODO: extend `cb-manage-windows' to include it (partially?)
-  ;; C-x w -		fit-window-to-buffer
-  ;; C-x w 0		delete-windows-on
-  ;; C-x w 2		split-root-window-below
-  ;; C-x w 3		split-root-window-right
-  ;; C-x w s		window-toggle-side-windows
-
-  ;; C-x w ^ f	tear-off-window
-  ;; C-x w ^ t	tab-window-detach
-  (global-set-key (kbd "C-x w") 'cb-manage-windows)
   (global-set-key (kbd "M-z") 'zap-up-to-char)
   )
 
