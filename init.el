@@ -197,14 +197,15 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   (delete-other-windows))
 
 
+(defun cb-remove-advice-from-functions (funcs)
+  (dolist (func funcs)
+    (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
+
+
 (defun cb-window-management ()
   "Manage windows."
   (use-package ace-window
     :bind ("C-x w" . ace-window))
-
-  (defun cb-remove-advice-from-functions (funcs)
-    (dolist (func funcs)
-      (advice-mapc (lambda (advice _props) (advice-remove func advice)) func)))
 
   (use-package window-purpose
     :config
