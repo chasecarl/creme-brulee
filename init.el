@@ -34,6 +34,7 @@
 					      ("p" . Permanent))
     "The mapping of note types to keys for note type menus."))
 
+(use-package transient)
 
 (defun find-macro-usage ()
   (let ((result (search-forward
