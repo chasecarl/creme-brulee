@@ -159,7 +159,9 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
                   (:eval (purpose--modeline-string))
                   mode-line-misc-info mode-line-end-spaces
                   ))
-  )
+  (use-package awesome-tray
+    :straight (:host github :repo "manateelazycat/awesome-tray")
+    :config (awesome-tray-mode 1)))
 
 
 (defun cb--minimize-frame ()

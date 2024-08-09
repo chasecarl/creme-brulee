@@ -1,6 +1,7 @@
 (("Emacs-wgrep" . "208b9d01cfffa71037527e3a324684b3ce45ddc4")
  ("ace-window" . "77115afc1b0b9f633084cf7479c767988106c196")
  ("avy" . "be612110cb116a38b8603df367942e2bb3d9bdbe")
+ ("awesome-tray" . "138c7d22b1cd82ed883de1c859ead7a93736a734")
  ("biblio.el" . "ee52f6cda82ea6fbc3b400e7b12132595cc0374c")
  ("citeproc-el" . "54184baaff555b5c7993d566d75dd04ed485b5c0")
  ("combobulate" . "ee82c568ad639605518f62f82fae4bcc0dfdbb81")
