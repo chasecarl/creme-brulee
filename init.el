@@ -159,8 +159,7 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
                   (:eval (purpose--modeline-string))
                   mode-line-misc-info mode-line-end-spaces
                   ))
-  (use-package mini-echo
-    :config (mini-echo-mode)))
+  )
 
 
 (defun cb--minimize-frame ()
