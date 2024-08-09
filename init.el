@@ -204,9 +204,8 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   "Manage windows."
   (use-package ace-window
     :config
-    ;; TODO: this may be a good place to introduce arrow macros
-    (setq aw-dispatch-alist (add-to-list (assq-delete-all ?n aw-dispatch-alist)
-                                         '(?w . (aw-flip-window))))
+    (setq aw-dispatch-alist (assq-delete-all ?n aw-dispatch-alist))
+    (add-to-list 'aw-dispatch-alist '(?w . (aw-flip-window)))
     :bind ("C-x w" . ace-window))
 
   (use-package window-purpose
