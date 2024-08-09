@@ -204,6 +204,7 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   "Manage windows."
   (use-package ace-window
     :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
     (setq aw-dispatch-alist (assq-delete-all ?n aw-dispatch-alist))
     (add-to-list 'aw-dispatch-alist '(?w . (aw-flip-window)))
     (custom-set-faces '(aw-leading-char-face
