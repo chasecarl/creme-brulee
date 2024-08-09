@@ -140,12 +140,7 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   ;; the modeline is the same as the default + winum + vc branch name are truncated + no
   ;; minor modes + purpose
   (setq-default mode-line-format
-                '("%e"
-                  (:eval
-                   (format winum-format
-                           (winum-get-number-string)))
-                  mode-line-front-space
-                  (:propertize
+                '((:propertize
                    (""
                     mode-line-mule-info
                     mode-line-client
