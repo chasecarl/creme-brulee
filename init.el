@@ -161,7 +161,10 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
                   ))
   (use-package awesome-tray
     :straight (:host github :repo "manateelazycat/awesome-tray")
-    :config (awesome-tray-mode 1)))
+    :config
+    (setq awesome-tray-active-modules
+          '("location" "belong" "file-path" "mode-name" "buffer-name"))
+    (awesome-tray-mode 1)))
 
 
 (defun cb--minimize-frame ()
