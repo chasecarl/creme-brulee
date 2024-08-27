@@ -128,6 +128,17 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
     (load-theme 'modus-vivendi)))
 
 
+(defface persp-name-face
+  '((((background light)) :inherit awesome-tray-grey-face)
+    (t :inherit awesome-tray-grey-face))
+  "Perspective name face."
+  :group 'awesome-tray)
+
+
+(defun persp-name-info ()
+  (awesome-tray-truncate-string (persp-current-name) 20))
+
+
 (defun cb--adjust-visuals ()
   "Hides some unneeded things from GUI."
   (scroll-bar-mode -1)
@@ -159,11 +170,14 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
                   (:eval (purpose--modeline-string))
                   mode-line-misc-info mode-line-end-spaces
                   ))
+
   (use-package awesome-tray
     :straight (:host github :repo "manateelazycat/awesome-tray")
     :config
+    (add-to-list 'awesome-tray-module-alist
+                 '("persp-name" . (persp-name-info persp-name-face)))
     (setq awesome-tray-active-modules
-          '("location" "belong" "file-path" "mode-name" "buffer-name"))
+          '("location" "belong" "mode-name" "file-path" "buffer-name" "persp-name"))
     (awesome-tray-mode 1)))
 
 
