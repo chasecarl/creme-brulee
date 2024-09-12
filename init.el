@@ -958,8 +958,10 @@ Unlike `org-get-heading', include the stars."
       ;; the grammar list is almost entirely taken from
       ;; https://github.com/casouri/tree-sitter-module
       (dolist (grammar
-	       '((clojure :org "dannyfreeman")
+	       '((c)
+                 (clojure :org "dannyfreeman")
 		 (cmake :org "uyha")
+                 (cpp)
                  (c-sharp)
 		 (css)
 		 (dart :org "ast-grep")
