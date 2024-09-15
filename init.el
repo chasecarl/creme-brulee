@@ -222,7 +222,8 @@ This is achieved by killing and yanking, so the buffer will be considered modifi
   (use-package ace-window
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-          aw-dispatch-alist (assq-delete-all ?n aw-dispatch-alist))
+          aw-dispatch-alist (assq-delete-all ?n aw-dispatch-alist)
+          aw-dispatch-always t)
     (add-to-list 'aw-dispatch-alist '(?w . (aw-flip-window)))
     (custom-set-faces '(aw-leading-char-face
                         ((t :inherit ace-jump-face-foreground :height 1.0))))
